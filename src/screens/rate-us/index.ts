@@ -1,0 +1,1 @@
+export { default as RateUs} from './RateUs';
