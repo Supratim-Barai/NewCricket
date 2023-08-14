@@ -1,15 +1,33 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList } from "react-native";
 import styled from "styled-components/native";
 import { Loading } from "../../components/Loading";
-import { useAppSelector } from "../../store";
-import { Match } from "../../store/features/recent.slice";
+// import { useAppSelector } from "../../store";
+// import { Match } from "../../store/features/recent.slice";
 import { Card, ItemSeprator } from "../../ui";
 import { NoMatchs } from "./NoMatchs";
+import { getRecentMatches,Match } from "../../config/axios";
 
 const Test= () => {
-    const { data, loading } = useAppSelector(state => state.recent);
+    const [loading, setLoading] = useState(true);
+    const [matches, setMatches] = useState<Array<Match>>([]);
+
+    const getMatche = async () => {
+        try {
+            const { data } = await getRecentMatches("Test", 1, 15);
+            if (!data?.error) {
+                setMatches(data.data.result)
+            }
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        getMatche();
+    }, [])
+
     const navigation: any = useNavigation();
     const renderItem = ({ item }: { item: Match }) => {
         return (
@@ -32,7 +50,7 @@ const Test= () => {
                             <Logo source={{ uri: item.team_b_img }} />
                             <TeamName>{item.team_b_short}</TeamName>
                             {Boolean(item.team_b_scores) && <ScoreContainer>
-                                <Score>{item.team_b_scores} ({item.team_b_over})</Score>
+                                <Score numberOfLines={1}>{item.team_b_scores} ({item.team_b_over})</Score>
                             </ScoreContainer>}
                         </Row>
                     </MatchContainer>
@@ -60,7 +78,6 @@ const Test= () => {
     }
 
     if (loading) return <Loading />;
-    const matches = data.filter(m => m.match_type === "TEST");
     return (
         <Container>
             <FlatList
@@ -179,19 +196,20 @@ const ScoreContainer = styled.View`
     padding: 0 5px;
     border-radius: 12px;
     justify-content: center;
-    margin-left: 10px;
+    flex: 1;
 `;
 
 const Score = styled.Text`
     color: #fff;
     font-family: 'Roboto-Black';
-    font-size: 12px;
+    font-size: 10px;
 `;
 
 const TeamName = styled.Text`
 color: #fff;
 font-family: 'Roboto-Black';
-flex: 1;
+font-size: 14px;
+margin-right: 8px;
 `;
 
 

@@ -1,15 +1,33 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList } from "react-native";
 import styled from "styled-components/native";
 import { Loading } from "../../components/Loading";
 import { useAppSelector } from "../../store";
-import { Match } from "../../store/features/recent.slice";
+// import { Match } from "../../store/features/recent.slice";
 import { Card, ItemSeprator } from "../../ui";
 import { NoMatchs } from "./NoMatchs";
+import {getRecentMatches, Match} from "../../config/axios";
 
 const All = () => {
-    const { data, loading } = useAppSelector(state => state.recent);
+    const [loading, setLoading] = useState(true);
+    const [matches, setMatches] = useState<Array<Match>>([]);
+
+    const getMatche = async () => {
+        try {
+            const { data } = await getRecentMatches("", 1, 15);
+            if (!data?.error) {
+                setMatches(data.data.result)
+            }
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        getMatche();
+    }, [])
+
     const navigation: any = useNavigation();
     const renderItem = ({ item }: { item: Match }) => {
         return (
@@ -75,7 +93,7 @@ const All = () => {
     return (
         <Container>
             <FlatList
-                data={data}
+                data={matches}
                 renderItem={renderItem}
                 ListHeaderComponent={ItemSeprator}
                 ItemSeparatorComponent={ItemSeprator}

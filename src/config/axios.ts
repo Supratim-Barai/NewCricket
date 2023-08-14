@@ -19,7 +19,7 @@ export const setClientToken = (token: string) => {
 
 export default APIKit;
 
-export type MatchType = "" | "Test" | "Odi" | "T20";
+export type MatchType = "" | "Test" | "ODI" | "T20" | "T10";
 
 export interface Match {
   "match_id": number;

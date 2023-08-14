@@ -1,15 +1,33 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { FlatList } from "react-native";
 import styled from "styled-components/native";
 import { Card, ItemSeprator } from "../../ui";
-import {NoMatchs} from "./NoMatchs";
-import { useAppSelector } from "../../store";
+import { NoMatchs } from "./NoMatchs";
+// import { useAppSelector } from "../../store";
 import { Loading } from "../../components/Loading";
-import { Match } from "../../store/features/recent.slice";
+// import { Match } from "../../store/features/recent.slice";
+import { getRecentMatches, Match } from "../../config/axios";
 
-const T10= () => {
-    const { data, loading } = useAppSelector(state => state.recent);
+const T10 = () => {
+    const [loading, setLoading] = useState(true);
+    const [matches, setMatches] = useState<Array<Match>>([]);
+
+    const getMatche = async () => {
+        try {
+            const { data } = await getRecentMatches("T10", 1, 15);
+            if (!data?.error) {
+                setMatches(data.data.result)
+            }
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        getMatche();
+    }, [])
+
     const navigation: any = useNavigation();
     const renderItem = ({ item }: { item: Match }) => {
         return (
@@ -59,53 +77,8 @@ const T10= () => {
         )
     }
 
-    // const renderItem = ({ item }: any) => {
-    //     return (
-    //         <Card>
-    //             <Header>
-    //                 <Left>
-    //                     <Title>{item.match}</Title>
-    //                 </Left>
-    //             </Header>
-    //             <Body>
-    //                 <MatchContainer>
-    //                     <Row style={{ marginBottom: 5 }}>
-    //                         <Logo source={item.team.avatar} />
-    //                         <TeamName>{item.team.name}</TeamName>
-    //                         <ScoreContainer>
-    //                             <Score>160-5 (20.0)</Score>
-    //                         </ScoreContainer>
-    //                     </Row>
-    //                     <Row>
-    //                         <Logo source={item.oppositionTeam.avatar} />
-    //                         <TeamName>{item.oppositionTeam.name}</TeamName>
-    //                         <ScoreContainer>
-    //                             <Score>160-5 (20.0)</Score>
-    //                         </ScoreContainer>
-    //                     </Row>
-    //                 </MatchContainer>
-    //                 <ManOfMatchContainer>
-    //                     <ManOfMatchContainerTitle>PLAYER OF THE MATCH</ManOfMatchContainerTitle>
-    //                     <Player>
-    //                         <Logo source={require("../../assets/images/shikhar-dhawan.jpeg")} />
-    //                         <Text>Shikhar {"\n"} Dhawan</Text>
-    //                     </Player>
-    //                     <Row>
-    //                         <Button>
-    //                             <ButtonText>POINT TABLE</ButtonText>
-    //                         </Button>
-    //                         <Button><ButtonText>SCORE CARD</ButtonText></Button>
-    //                     </Row>
-    //                 </ManOfMatchContainer>
-    //             </Body>
-    //             <Footer>
-    //                 <Caption>CSK WON BY 11 RUNS</Caption>
-    //             </Footer>
-    //         </Card>
-    //     )
-    // }
+
     if (loading) return <Loading />;
-    const matches = data.filter(m => m.match_type === "T10");
     return (
         <Container>
             <FlatList
@@ -170,209 +143,6 @@ const Caption = styled.Text`
     font-size: 9px;
     font-family: 'Roboto-Regular';
 `;
-
-const data = [
-    {
-        id: 1,
-        match: "Pakistan Super League 2021",
-        type: "T20",
-        date: new Date().toLocaleString(),
-        over: 20,
-        venue: "CHENNAI",
-        team: {
-            name: "CSK",
-            avatar: require("../../assets/images/csk.png"),
-            projectedScore: "163-165",
-            projectedPoint: "60"
-        },
-        oppositionTeam: {
-            name: "MI",
-            avatar: require("../../assets/images/mi.jpeg"),
-            projectedScore: "159-161",
-            projectedPoint: "66"
-        }
-    },
-    {
-        id: 2,
-        match: "Pakistan Super League 2021",
-        type: "T20",
-        date: new Date().toLocaleString(),
-        over: 20,
-        venue: "CHENNAI",
-        team: {
-            name: "CSK",
-            avatar: require("../../assets/images/csk.png"),
-            projectedScore: "163-165",
-            projectedPoint: "60"
-        },
-        oppositionTeam: {
-            name: "MI",
-            avatar: require("../../assets/images/mi.jpeg"),
-            projectedScore: "159",
-            projectedPoint: "66"
-        }
-    },
-    {
-        id: 3,
-        match: "Pakistan Super League 2021",
-        type: "T20",
-        date: new Date().toLocaleString(),
-        over: 20,
-        venue: "CHENNAI",
-        team: {
-            name: "CSK",
-            avatar: require("../../assets/images/csk.png"),
-            projectedScore: "163-165",
-            projectedPoint: "60"
-        },
-        oppositionTeam: {
-            name: "MI",
-            avatar: require("../../assets/images/mi.jpeg"),
-            projectedScore: "159",
-            projectedPoint: "66"
-        }
-    },
-    {
-        id: 4,
-        match: "Pakistan Super League 2021",
-        type: "T20",
-        date: new Date().toLocaleString(),
-        over: 20,
-        venue: "CHENNAI",
-        team: {
-            name: "CSK",
-            avatar: require("../../assets/images/csk.png"),
-            projectedScore: "163-165",
-            projectedPoint: "60"
-        },
-        oppositionTeam: {
-            name: "MI",
-            avatar: require("../../assets/images/mi.jpeg"),
-            projectedScore: "159",
-            projectedPoint: "66"
-        }
-    },
-    {
-        id: 5,
-        match: "Pakistan Super League 2021",
-        type: "T20",
-        date: new Date().toLocaleString(),
-        over: 20,
-        venue: "CHENNAI",
-        team: {
-            name: "CSK",
-            avatar: require("../../assets/images/csk.png"),
-            projectedScore: "163-165",
-            projectedPoint: "60"
-        },
-        oppositionTeam: {
-            name: "MI",
-            avatar: require("../../assets/images/mi.jpeg"),
-            projectedScore: "159",
-            projectedPoint: "66"
-        }
-    },
-    {
-        id: 6,
-        match: "Pakistan Super League 2021",
-        type: "T20",
-        date: new Date().toLocaleString(),
-        over: 20,
-        venue: "CHENNAI",
-        team: {
-            name: "CSK",
-            avatar: require("../../assets/images/csk.png"),
-            projectedScore: "163-165",
-            projectedPoint: "60"
-        },
-        oppositionTeam: {
-            name: "MI",
-            avatar: require("../../assets/images/mi.jpeg"),
-            projectedScore: "159",
-            projectedPoint: "66"
-        }
-    },
-    {
-        id: 7,
-        match: "Pakistan Super League 2021",
-        type: "T20",
-        date: new Date().toLocaleString(),
-        over: 20,
-        venue: "CHENNAI",
-        team: {
-            name: "CSK",
-            avatar: require("../../assets/images/csk.png"),
-            projectedScore: "163-165",
-            projectedPoint: "60"
-        },
-        oppositionTeam: {
-            name: "MI",
-            avatar: require("../../assets/images/mi.jpeg"),
-            projectedScore: "159",
-            projectedPoint: "66"
-        }
-    },
-    {
-        id: 8,
-        match: "Pakistan Super League 2021",
-        type: "T20",
-        date: new Date().toLocaleString(),
-        over: 20,
-        venue: "CHENNAI",
-        team: {
-            name: "CSK",
-            avatar: require("../../assets/images/csk.png"),
-            projectedScore: "163-165",
-            projectedPoint: "60"
-        },
-        oppositionTeam: {
-            name: "MI",
-            avatar: require("../../assets/images/mi.jpeg"),
-            projectedScore: "159",
-            projectedPoint: "66"
-        }
-    },
-    {
-        id: 9,
-        match: "Pakistan Super League 2021",
-        type: "T20",
-        date: new Date().toLocaleString(),
-        over: 20,
-        venue: "CHENNAI",
-        team: {
-            name: "CSK",
-            avatar: require("../../assets/images/csk.png"),
-            projectedScore: "163-165",
-            projectedPoint: "60"
-        },
-        oppositionTeam: {
-            name: "MI",
-            avatar: require("../../assets/images/mi.jpeg"),
-            projectedScore: "159",
-            projectedPoint: "66"
-        }
-    },
-    {
-        id: 10,
-        match: "Pakistan Super League 2021",
-        type: "T20",
-        date: new Date().toLocaleString(),
-        over: 20,
-        venue: "CHENNAI",
-        team: {
-            name: "CSK",
-            avatar: require("../../assets/images/csk.png"),
-            projectedScore: "163-165",
-            projectedPoint: "60"
-        },
-        oppositionTeam: {
-            name: "MI",
-            avatar: require("../../assets/images/mi.jpeg"),
-            projectedScore: "159",
-            projectedPoint: "66"
-        }
-    }
-]
 
 const Container = styled.View`
     flex: 1;
