@@ -1,15 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList } from "react-native";
+import moment from "moment";
 import styled from "styled-components/native";
 import { Card, ItemSeprator } from "../../ui";
 import LinearGradient from "react-native-linear-gradient";
 import { NoMatchs } from "./NoMatchs";
-import { useAppSelector } from "../../store";
+// import { useAppSelector } from "../../store";
 import { Loading } from "../../components/Loading";
-import { Match } from "../../store/features/upcoming.slice";
+// import { Match } from "../../store/features/upcoming.slice";
+import { getUpcomingMatches, Match } from "../../config/axios";
 
 const Test = () => {
-    const { data, loading } = useAppSelector(state => state.upcoming);
+    const [loading, setLoading] = useState(true);
+    const [matches, setMatches] = useState<Array<Match>>([]);
+
+    const getMatche = async () => {
+        try {
+            const { data } = await getUpcomingMatches("Test", 1, 15);
+            if (!data?.error) {
+                setMatches(data.data.result)
+            }
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        getMatche();
+    }, [])
+
     const renderItem = ({ item }: { item: Match }) => {
         return (
             <Card>
@@ -18,7 +37,7 @@ const Test = () => {
                         <Title>{item.series}</Title>
                     </Left>
                     <Right>
-                        <Title>{item.date_wise} {item.match_time}</Title>
+                        <Title>{moment(item.date_wise, 'DD MMM YYYY, dddd').format('DD MMM YYYY, ddd,')} {item.match_time}</Title>
                     </Right>
                 </Header>
                 <Body>
@@ -79,7 +98,6 @@ const Test = () => {
         )
     }
     if (loading) return <Loading />;
-    const matches = data.filter(m => m.match_type === "TEST");
     return (
         <Container>
             <FlatList
