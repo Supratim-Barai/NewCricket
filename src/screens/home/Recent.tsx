@@ -1,13 +1,16 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import styled from "styled-components/native";
 import { MatchType } from "../../components/MatchType";
-import { getRecentMatches } from "../../services";
 import { Card } from "../../ui";
 import { useNavigation } from "@react-navigation/native";
+import { Match } from "../../config/axios";
+
+interface RecentProps {
+    recent: Match;
+}
 
 
-
-export const Recent: FC<{ recent: any }> = ({recent}) => {
+export const Recent: FC<RecentProps> = ({ recent }) => {
     const navigation: any = useNavigation();
     return (
         <Card activeOpacity={1} style={{

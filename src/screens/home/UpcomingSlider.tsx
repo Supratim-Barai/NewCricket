@@ -1,79 +1,33 @@
 /* eslint-disable prettier/prettier */
-import React, { useCallback, useEffect, useState } from "react";
-import styled from "styled-components/native";
+import React, { useEffect, useState } from "react";
 import Swiper from 'react-native-swiper';
 import { View } from "react-native";
 import { Upcoming } from "./Upcoming";
-import axios from '../../config/axios';
-import { useFocusEffect } from "@react-navigation/native";
-import io from "socket.io-client";
+import { getUpcomingMatches, Match } from "../../config/axios";
 
-const SOCKET_URL = "http://52.66.245.248:3001";
-export interface IMatch {
-    date_wise: string,
-    fav_team: string,
-    match_date: string,
-    match_id: number,
-    match_time: string,
-    match_type: string,
-    matchs: string,
-    max_rate: number,
-    min_rate: number,
-    series: string,
-    series_id: number,
-    team_a: string,
-    team_a_id: number,
-    team_a_img: string,
-    team_a_short: string,
-    team_b: string,
-    team_b_id: number,
-    team_b_img: string,
-    team_b_short: string,
-    venue: string;
-}
+
 
 const UpcomingSlider = () => {
-    const [list, setList] = useState([]);
-    
-    const getUpcommingMatches = useCallback(async () => {
-        const { data } = await axios.get('game/list-upcomming-game');
-        setList(data?.data?.list || [])
-    }, [setList])
+    const [loading, setLoading] = useState(true);
+    const [matches, setMatches] = useState<Array<Match>>([]);
 
-    const [res, setRes] = useState<any>(null);
 
-    useFocusEffect(React.useCallback(() => {
-        const socket = io(SOCKET_URL);
-        setRes([]);
-        socket.on("connect", () => {
-            console.log("socket connect");
-          });
-          
-          socket.on("disconnect", () => {
-            console.log("socket disconnect"); 
-          });
+    const getMatche = async () => {
+        try {
+            const { data } = await getUpcomingMatches("", 1, 3);
+            if (!data?.error) {
+                setMatches(data.data.result)
+            }
+        } finally {
+            setLoading(false);
+        }
+    }
 
-        socket.on("getAllMatchList", (res: any) => {
-            setRes(res);
-            console.log("dataa........................",res);
-        })
-        socket.emit("getMatchList", JSON.stringify({status:"upcoming"}));
-        return () => socket.disconnect();
-    }, []))
+    useEffect(() => {
+        getMatche();
+    }, [])
 
-    // useEffect(() => {
-    //     getUpcommingMatches();
-    //     const interval = setInterval(() => { 
-    //         getUpcommingMatches();
-    //     }, 45000);
-    //     return () => {
-    //         clearInterval(interval);
-    //     }
-    // }, [getUpcommingMatches])
-
-    const matches = res?.slice(0, 3) || [];
-    if (matches?.length === 0) return null;
-
+    if (loading || matches?.length === 0) return null;
     return (
         <View style={{ marginBottom: 10 }}>
             <Swiper style={{ height: 170 }} paginationStyle={{
@@ -81,7 +35,7 @@ const UpcomingSlider = () => {
             }}
                 activeDotColor="#fff"
             >
-                {matches?.map((d: IMatch) => <Upcoming key={d.match_id} match={d} />)}
+                {matches.map((match) => <Upcoming key={match?.match_id} match={match} />)}
             </Swiper>
         </View>
     )

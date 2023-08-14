@@ -1,34 +1,32 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import styled from "styled-components/native";
 import LinearGradient from 'react-native-linear-gradient';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { LeftMatchTitle, RightMatchTitle } from "../../components/MatchTitle";
 import { MatchType } from "../../components/MatchType";
 import { MatchPoint } from "../../components/MatchPoint";
 import { LeftEspectedScore, RightEspectedScore } from "../../components/EspectedScore";
-import { IMatch } from "./UpcomingSlider";
-import {RemainingTime} from "../../components/RemainingTime";
+import { RemainingTime } from "../../components/RemainingTime";
 import moment from "moment";
-
-const dateFormat = (date:string, time:string) => {
-    return `${date} 08:00:00`;
+import { Match } from "../../config/axios";
+interface UpcomingProps {
+    match: Match;
 }
 
-export const Upcoming: FC<any> = ({ match }) => {
+export const Upcoming: FC<UpcomingProps> = ({ match }) => {
     console.log(moment())
 
     return (
         <Container>
             <GradientContainer colors={['#33014a', '#07000a']}>
                 <Header>
-                    <LeftMatchTitle title={match?.tournamentName} />
+                    <LeftMatchTitle title={match?.series} />
                     <MatchType name="UPCOMING" />
-                    <RightMatchTitle title={`${match.categoryName} ${match.startTime} ${match.match_time}`} />
+                    <RightMatchTitle title={`${match.categoryName} ${match.match_date} ${match.match_time}`} />
                 </Header>
                 <Body>
                     <TeamScoreContainer>
                         <RemainingTime.Container>
-                            <RemainingTime date={`${match.startTime} ${match.match_time}`}/>
+                            <RemainingTime date={`${match.date_wise} ${match.match_time}`} />
                         </RemainingTime.Container>
                         {/* <MatchRemainingTimeContainer>
                             <RemainingTime>{timer}</RemainingTime>
@@ -39,14 +37,14 @@ export const Upcoming: FC<any> = ({ match }) => {
                         </ScoreContainer>
                         <TeamContainer>
                             <TeamNameContainer colors={['#5f026e', '#43045e']}>
-                                <TeamName>{match.teamAName}</TeamName>
+                                <TeamName>{match.team_a_short}</TeamName>
                                 <VsContainer>
                                     <VsText>VS</VsText>
                                 </VsContainer>
-                                <TeamName>{match.teamBName}</TeamName>
+                                <TeamName>{match.team_b_short}</TeamName>
                             </TeamNameContainer>
-                            <Logo source={{ uri: match.teamALogo }} style={{ left: -2.5 }} />
-                            <Logo source={{ uri: match.teamBLogo }} style={{ right: -2.5 }} />
+                            <Logo source={{ uri: match.team_a_img }} style={{ left: -2.5 }} />
+                            <Logo source={{ uri: match.team_b_img }} style={{ right: -2.5 }} />
                         </TeamContainer>
                         <ScoreContainer>
                             <Score>00-0</Score>
@@ -54,7 +52,7 @@ export const Upcoming: FC<any> = ({ match }) => {
                         </ScoreContainer>
                     </TeamScoreContainer>
                     <LeftEspectedScore over={20} score={`${match.teamAscore1}-${match.teamAscore2}`} />
-                    <MatchPoint leftValue={match?.teamRate1} title={match?.favouriteTeamName} rightValue={match?.teamRate2} />
+                    <MatchPoint leftValue={match?.teamRate1} title={match.fav_team} rightValue={match?.teamRate2} />
                     <RightEspectedScore over={20} score={`${match.teamBscore1}-${match.teamBscore2}`} />
                 </Body>
             </GradientContainer>

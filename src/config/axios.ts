@@ -1,5 +1,5 @@
 import axios from "axios";
-import {BASE_URL,X_ACCESS_TOKEN} from "../constants";
+import { BASE_URL, X_ACCESS_TOKEN } from "../constants";
 
 let APIKit = axios.create({
   baseURL: BASE_URL,
@@ -18,3 +18,81 @@ export const setClientToken = (token: string) => {
 };
 
 export default APIKit;
+
+export type MatchType = "" | "Test" | "Odi" | "T20";
+
+export interface Match {
+  "match_id": number;
+  "series_id": number;
+  "series": string;
+  "date_wise": string;
+  "match_date": string;
+  "match_time": string;
+  "matchs": string;
+  "venue": string;
+  "match_type": string;
+  "result": string;
+  "team_a_id": number;
+  "team_a": string;
+  "team_a_short": string;
+  "team_a_img": string;
+  "team_a_scores": string;
+  "team_a_over": string;
+  "team_b_id": number;
+  "team_b": string;
+  "team_b_short": string;
+  "team_b_img": string;
+  "team_b_scores": string;
+  "team_b_over": string;
+  "min_rate": string;
+  "max_rate": string;
+  "fav_team": string;
+}
+
+interface DataResponse {
+  error: boolean;
+  message: string;
+  data: {
+    result: Array<Match>;
+    count: number;
+  }
+}
+
+export const getRecentMatches = (matchType: MatchType = "", page = 1, limit = 10) => {
+  const data = JSON.stringify({
+    matchType,
+    page,
+    itemsPerPage: limit
+  })
+  return APIKit.request<DataResponse>({
+    method: "POST",
+    url: '/match/recentMatch',
+    data
+  })
+}
+
+export const getUpcomingMatches = (matchType: MatchType = "", page = 1, limit = 10) => {
+  const data = JSON.stringify({
+    matchType,
+    page,
+    itemsPerPage: limit
+  })
+  return APIKit.request<DataResponse>({
+    method: "POST",
+    url: '/match/upcomingMatch',
+    data
+  })
+}
+
+export const getLiveMatches = (matchType: MatchType = "", page = 1, limit = 10) => {
+  const data = JSON.stringify({
+    matchType,
+    page,
+    itemsPerPage: limit
+  })
+  return APIKit.request<DataResponse>({
+    method: "POST",
+    url: '/match/liveMatch',
+    data
+  })
+}
