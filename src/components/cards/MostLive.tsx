@@ -7,41 +7,46 @@ import { LeftMatchTitle } from "../../components/MatchTitle";
 import { MatchPoint } from "../../components/MatchPoint";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
+import { Match } from "../../config/axios";
 
-const MostLive: FC<{ match: any }> = ({ match }) => {
+interface LiveMatchProps {
+    match: Match
+}
+
+const MostLive: FC<LiveMatchProps> = ({ match }) => {
     const navigation = useNavigation();
     return (
         <Container activeOpacity={1} onPress={() => navigation.navigate("LiveStack_Live", { match_id: match.match_id })}>
             <GradientContainer colors={['#33014a', '#07000a']}>
                 <Header>
-                    <LeftMatchTitle title={match?.tournamentName || ""} />
+                    <LeftMatchTitle title={match.series || ""} />
                     <MatchType name="MOST LIVE" />
-                    <T20 title={match?.categoryName} />
+                    <T20 title={match?.match_type} />
                 </Header>
                 <Body>
                     <TeamScoreContainer>
                         {/* <MatchUpdateText>CSK WON THE TOSS & OPTED TO BAT</MatchUpdateText> */}
                         <ScoreContainer>
-                            <Score>{match?.team_a_score?.[1]?.score ?? match?.team_a_score?.[2]?.score}-{match?.team_a_score?.[1]?.wicket ?? match?.team_a_score?.[2]?.wicket}</Score>
-                            <Over>{match?.team_a_score?.[1]?.over ?? match?.team_a_score?.[2]?.over} OVER</Over>
+                            <Score>{match.team_a_scores}</Score>
+                            <Over>{match.team_a_over} OVER</Over>
                         </ScoreContainer>
                         <TeamContainer>
                             <TeamNameContainer colors={['#5f026e', '#43045e', '#5f026e']}>
-                                <TeamName>{match?.teamAName || ""}</TeamName>
+                                <TeamName>{match?.team_a_short || ""}</TeamName>
                                 <VsContainer>
                                     <VsText>VS</VsText>
                                 </VsContainer>
-                                <TeamName>{match?.teamBName || ""}</TeamName>
+                                <TeamName>{match.team_b_short || ""}</TeamName>
                             </TeamNameContainer>
-                            <Logo source={{ uri: match?.teamALogo }} style={{ left: -2.5 }} />
-                            <Logo source={{ uri: match?.teamBLogo }} style={{ right: -2.5 }} />
+                            <Logo source={{ uri: match.team_a_img }} style={{ left: -2.5 }} />
+                            <Logo source={{ uri: match.team_b_img }} style={{ right: -2.5 }} />
                         </TeamContainer>
                         <ScoreContainer>
-                            <Score>{match?.team_b_score?.[1]?.score ?? match?.team_b_score?.[2]?.score}-{match?.team_b_score?.[1]?.wicket ?? match?.team_b_score?.[2]?.wicket}</Score>
-                            <Over>{match?.team_b_score?.[1]?.over ?? match?.team_b_score?.[2]?.over} OVER</Over>
+                            <Score>{match.team_b_scores}</Score>
+                            <Over>{match.team_b_over} OVER</Over>
                         </ScoreContainer>
                     </TeamScoreContainer>
-                    <MatchPoint leftValue={match?.teamRate1} title={match?.favouriteTeamName || ""} rightValue={match?.teamRate2} />
+                    <MatchPoint leftValue={match?.teamRate1} title={match?.fav_team || ""} rightValue={match?.teamRate2} />
                 </Body>
             </GradientContainer>
         </Container>

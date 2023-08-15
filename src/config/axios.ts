@@ -47,6 +47,22 @@ export interface Match {
   "min_rate": string;
   "max_rate": string;
   "fav_team": string;
+  "s_ovr": string;
+  "s_min": string;
+  "s_max": string;
+  "session": string | null;
+  "team_a_score": Record<string, {
+    "score": number;
+    "wicket": number;
+    "over": string;
+  }>;
+  "team_a_scores_over": Array<
+    {
+      "score": string;
+      "over": string;
+    }
+  >,
+  "team_b_scores_over": Array<any>
 }
 
 interface DataResponse {

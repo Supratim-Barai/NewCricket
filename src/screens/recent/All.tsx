@@ -1,24 +1,26 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
-import { FlatList, RefreshControl } from "react-native";
+import { ActivityIndicator, FlatList, RefreshControl, View } from "react-native";
 import styled from "styled-components/native";
 import { Loading } from "../../components/Loading";
 import { useAppSelector } from "../../store";
 // import { Match } from "../../store/features/recent.slice";
 import { Card, ItemSeprator } from "../../ui";
 import { NoMatchs } from "./NoMatchs";
-import {getRecentMatches, Match} from "../../config/axios";
+import { getRecentMatches, Match } from "../../config/axios";
 
 const All = () => {
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(true);
     const [matches, setMatches] = useState<Array<Match>>([]);
+    const [page, setPage] = useState(1);
 
     const getMatche = async () => {
         try {
-            const { data } = await getRecentMatches("", 1, 15);
+            const { data } = await getRecentMatches("", 1, 5);
             if (!data?.error) {
                 setMatches(data.data.result)
+                setPage(1);
             }
         } finally {
             setRefreshing(false);
@@ -30,7 +32,20 @@ const All = () => {
         setRefreshing(true);
         getMatche();
     }, [refreshing]);
-    
+
+    const fetchMore = useCallback(async () => {
+        try {
+            setLoading(true);
+            const { data } = await getRecentMatches("", page + 1, 5);
+            if (!data?.error) {
+                setMatches(results => [...results, ...data.data.result])
+                setPage(page => page + 1);
+            }
+        } finally {
+            setLoading(false);
+        }
+    }, [refreshing, page]);
+
     useEffect(() => {
         getMatche();
     }, [])
@@ -96,6 +111,17 @@ const All = () => {
         )
     }
 
+    const renderFooter = () => (
+        <View style={{
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 8
+        }}>
+            {loading && <ActivityIndicator />}
+            
+        </View>
+    )
+
     if (loading && matches.length === 0) return <Loading />;
     return (
         <Container>
@@ -109,6 +135,9 @@ const All = () => {
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
+                onEndReachedThreshold={0.2}
+                onEndReached={fetchMore}
+                ListFooterComponent={renderFooter}
             />
         </Container>
     )

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { FlatList } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { FlatList, RefreshControl } from "react-native";
 import io from "socket.io-client";
 import styled from "styled-components/native";
 import { ItemSeprator } from "../../ui";
@@ -11,25 +11,39 @@ import { LeftMatchTitle } from "../../components/MatchTitle";
 import { MatchType } from "../../components/MatchType";
 import { T20 } from "../../components/T20";
 import { MatchPoint } from "../../components/MatchPoint";
+import { Match, getLiveMatches } from "../../config/axios";
+import { Loading } from "../../components/Loading";
 const SOCKET_URL = "http://52.66.245.248:3001";
 
 export const LiveMatches = ({ navigation }: any) => {
-    const [matches, setMatches] = useState<any>([]);
-    
-    useFocusEffect(React.useCallback(() => {
-        const socket = io(SOCKET_URL);
-        setMatches([]);
-        socket.on("ballByballDataScore", (res: any) => {
-            console.log(res?.body);
-            
-            setMatches(res);
-        })
-        socket.emit("ballByballData", {});
-        return () => socket.disconnect();
-    }, []))
+    const [refreshing, setRefreshing] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [matches, setMatches] = useState<Array<Match>>([]);
 
-    const renderItem = ({ item: match }: any) => (
-        
+
+    const getMatche = async () => {
+        try {
+            const { data } = await getLiveMatches("", 1, 3);
+            if (!data?.error) {
+                setMatches(data.data.result)
+            }
+        } finally {
+            setRefreshing(false);
+            setLoading(false);
+        }
+    }
+
+    const onRefresh = useCallback(async () => {
+        setRefreshing(true);
+        getMatche();
+    }, [refreshing]);
+
+    useEffect(() => {
+        getMatche();
+    }, [])
+
+
+    const renderItem = ({ item: match }: { item: Match }) => (
         <Card activeOpacity={1} onPress={() => navigation.navigate("LiveStack_Live", {
             match_id: match.match_id,
             screen: "Live_LiveMatch"
@@ -44,8 +58,8 @@ export const LiveMatches = ({ navigation }: any) => {
                     <TeamScoreContainer>
                         <MatchUpdateText>CSK WON THE TOSS & OPTED TO BAT</MatchUpdateText>
                         <ScoreContainer>
-                            <Score>{match?.team_a_score?.[1]?.score ?? match?.team_a_score?.[2]?.score}-{match?.team_a_score?.[1]?.wicket ?? match?.team_a_score?.[2]?.wicket}</Score>
-                            <Over>{match?.team_a_score?.[1]?.over ?? match?.team_a_score?.[2]?.over} OVER</Over>
+                            <Score>{match?.team_a_scores}</Score>
+                            <Over>{match.team_a_over} OVER</Over>
                         </ScoreContainer>
                         <TeamContainer>
                             <TeamNameContainer colors={['#5f026e', '#43045e', '#5f026e']}>
@@ -59,25 +73,29 @@ export const LiveMatches = ({ navigation }: any) => {
                             <Logo source={{ uri: match?.team_b_img }} style={{ right: -2.5 }} />
                         </TeamContainer>
                         <ScoreContainer>
-                            <Score>{match?.team_b_score?.[1]?.score ?? match?.team_b_score?.[2]?.score}-{match?.team_b_score?.[1]?.wicket ?? match?.team_b_score?.[2]?.wicket}</Score>
-                            <Over>{match?.team_b_score?.[1]?.over ?? match?.team_b_score?.[2]?.over} OVER</Over>
+                            <Score>{match.team_b_scores}</Score>
+                            <Over>{match.team_b_over} OVER</Over>
                         </ScoreContainer>
                     </TeamScoreContainer>
-                    <MatchPoint leftValue={match?.min_rate} title={match?.fav_team || ""} rightValue={match?.max_rate} />
+                    <MatchPoint leftValue={Number(match?.min_rate)} title={match?.fav_team || ""} rightValue={Number(match?.max_rate)} />
                 </Body>
             </GradientContainer>
         </Card>
     )
 
+    if (loading && matches.length === 0) return <Loading />;
     return (
         <Container>
             <FlatList
-                data={matches?.body}
+                data={matches}
                 renderItem={renderItem}
                 ListHeaderComponent={ItemSeprator}
                 ItemSeparatorComponent={ItemSeprator}
                 ListEmptyComponent={NoMatchs}
-                keyExtractor={(item) => "key" + item.match_id}
+                keyExtractor={(item) => item.match_id.toString()}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             />
         </Container>
     )
