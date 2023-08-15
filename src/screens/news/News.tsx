@@ -1,42 +1,54 @@
 import { useNavigation } from "@react-navigation/core";
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { FlatList } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import styled from "styled-components/native";
-import { useAppDispatch, useAppSelector } from "../../store";
-import { getAllNews } from "../../store/features/news.slice";
+import { getNews, News } from "../../config/axios";
+import { Loading } from "../../components/Loading";
 
-const News: FC = () => {
-    const dispatch = useAppDispatch();
+const NewsComponent: FC = () => {
     const navigation: any = useNavigation();
-    const { data, loading } = useAppSelector(state => state.news);
+    const [loading, setLoading] = useState(true);
+    const [news, setNews] = useState<Array<News>>([]);
+
+    const getMatche = async () => {
+        try {
+            const { data } = await getNews();
+            if (!data?.error) {
+                setNews(data.data.result)
+            }
+        } finally {
+            setLoading(false);
+        }
+    }
 
     useEffect(() => {
-        dispatch(getAllNews());
-    }, [dispatch])
+        getMatche();
+    }, [])
 
-    const renderItem = ({ item }: any) => {
+    const renderItem = ({ item }: { item: News }) => {
         return (
             <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate("ViewNews", { item })}>
                 <ImageContainer>
-                    <Image source={{ uri: item.image_link }} resizeMode="cover" />
+                    <Image source={{ uri: item.image }} resizeMode="cover" />
                 </ImageContainer>
                 <TextContainer>
                     <Title numberOfLines={2}>{item.title}</Title>
-                    <Time>1 Hour ago</Time>
+                    <Time>{item.pub_date}</Time>
                 </TextContainer>
             </TouchableOpacity>
         );
     };
 
+    if (loading) return <Loading />;
     return (
         <BackgroundContainer>
             <Container>
                 <GradientContainer colors={['#33014a', '#07000a']}>
                     <FlatList
-                        data={data}
+                        data={news}
                         renderItem={renderItem}
-                        keyExtractor={(item, _) => item._id}
+                        keyExtractor={(item, _) => item.news_id.toString()}
                     />
                 </GradientContainer>
             </Container>
@@ -44,7 +56,7 @@ const News: FC = () => {
     )
 }
 
-export default News;
+export default NewsComponent;
 
 const BackgroundContainer = styled.View`
     flex: 1;
@@ -107,4 +119,5 @@ const Time = styled.Text`
     font-size: 10px;
     text-transform: uppercase;
     align-self: flex-end;
+    margin-top: 4px;
 `;

@@ -96,3 +96,28 @@ export const getLiveMatches = (matchType: MatchType = "", page = 1, limit = 10) 
     data
   })
 }
+
+interface NewsDataResponse {
+  error: boolean;
+  message: string;
+  data: {
+    result: Array<News>;
+    count: number;
+  }
+}
+
+export interface News {
+  "news_id": number;
+  "title": string;
+  "description": string;
+  "image": string;
+  "pub_date": string;
+  "content": Array<string>;
+}
+
+export const getNews = () => {
+  return APIKit.request<NewsDataResponse>({
+    method: "POST",
+    url: '/match/news'
+  })
+}
