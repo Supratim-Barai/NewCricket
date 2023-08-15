@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { FC, useCallback, useEffect, useState } from "react";
-import { FlatList, RefreshControl } from "react-native";
+import { ActivityIndicator, FlatList, RefreshControl, View } from "react-native";
 import styled from "styled-components/native";
 import { Card, ItemSeprator } from "../../ui";
 import { NoMatchs } from "./NoMatchs";
@@ -13,12 +13,14 @@ const T10 = () => {
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(true);
     const [matches, setMatches] = useState<Array<Match>>([]);
+    const [page, setPage] = useState(1);
 
     const getMatche = async () => {
         try {
             const { data } = await getRecentMatches("T10", 1, 15);
             if (!data?.error) {
-                setMatches(data.data.result)
+                setMatches(data.data.result);
+                setPage(1);
             }
         } finally {
             setRefreshing(false);
@@ -30,6 +32,21 @@ const T10 = () => {
         setRefreshing(true);
         getMatche();
     }, [refreshing]);
+
+    const fetchMore = useCallback(async () => {
+        if(loading) return;
+        try {
+            setLoading(true);
+            console.log("page====", page + 1)
+            const { data } = await getRecentMatches("T10", page + 1, 5);
+            if (!data?.error) {
+                setMatches(results => [...results, ...data.data.result])
+                setPage(page => page + 1);
+            }
+        } finally {
+            setLoading(false);
+        }
+    }, [loading, page]);
 
     useEffect(() => {
         getMatche();
@@ -84,6 +101,16 @@ const T10 = () => {
         )
     }
 
+    const renderFooter = () => (
+        <View style={{
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 8
+        }}>
+            {loading && <ActivityIndicator />}
+            
+        </View>
+    )
 
     if (loading && matches.length === 0) return <Loading />;
     return (
@@ -98,6 +125,9 @@ const T10 = () => {
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
+                onEndReachedThreshold={0.2}
+                onEndReached={fetchMore}
+                ListFooterComponent={renderFooter}
             />
         </Container>
     )

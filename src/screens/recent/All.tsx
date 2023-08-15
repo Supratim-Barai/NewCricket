@@ -34,8 +34,10 @@ const All = () => {
     }, [refreshing]);
 
     const fetchMore = useCallback(async () => {
+        if(loading) return;
         try {
             setLoading(true);
+            console.log("page====", page + 1)
             const { data } = await getRecentMatches("", page + 1, 5);
             if (!data?.error) {
                 setMatches(results => [...results, ...data.data.result])
@@ -44,7 +46,7 @@ const All = () => {
         } finally {
             setLoading(false);
         }
-    }, [refreshing, page]);
+    }, [loading, page]);
 
     useEffect(() => {
         getMatche();
