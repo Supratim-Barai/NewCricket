@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { FlatList } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { FlatList, RefreshControl } from "react-native";
 import moment from "moment";
 import styled from "styled-components/native";
 import { Card, ItemSeprator } from "../../ui";
@@ -11,6 +11,7 @@ import { Loading } from "../../components/Loading";
 import { getUpcomingMatches, Match } from "../../config/axios";
 
 const Test = () => {
+    const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(true);
     const [matches, setMatches] = useState<Array<Match>>([]);
 
@@ -21,9 +22,15 @@ const Test = () => {
                 setMatches(data.data.result)
             }
         } finally {
+            setRefreshing(false);
             setLoading(false);
         }
     }
+
+    const onRefresh = useCallback(async () => {
+        setRefreshing(true);
+        getMatche();
+    }, [refreshing]);
 
     useEffect(() => {
         getMatche();
@@ -97,7 +104,7 @@ const Test = () => {
             </Card>
         )
     }
-    if (loading) return <Loading />;
+    if (loading && matches.length === 0) return <Loading />;
     return (
         <Container>
             <FlatList
@@ -106,7 +113,10 @@ const Test = () => {
                 ListHeaderComponent={ItemSeprator}
                 ItemSeparatorComponent={ItemSeprator}
                 ListEmptyComponent={NoMatchs}
-                keyExtractor={(item, index) => "key" + item.match_id}
+                keyExtractor={item => item.match_id.toString()}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             />
         </Container>
     )

@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useState } from "react";
-import { FlatList } from "react-native";
+import React, { FC, useCallback, useEffect, useState } from "react";
+import { FlatList, RefreshControl } from "react-native";
 import styled from "styled-components/native";
 import { Card, ItemSeprator } from "../../ui";
 import LinearGradient from "react-native-linear-gradient";
@@ -11,6 +11,7 @@ import { getUpcomingMatches, Match } from "../../config/axios";
 import moment from "moment";
 
 const All = () => {
+    const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(true);
     const [matches, setMatches] = useState<Array<Match>>([]);
 
@@ -21,9 +22,15 @@ const All = () => {
                 setMatches(data.data.result)
             }
         } finally {
+            setRefreshing(false);
             setLoading(false);
         }
     }
+
+    const onRefresh = useCallback(async () => {
+        setRefreshing(true);
+        getMatche();
+    }, [refreshing]);
 
     useEffect(() => {
         getMatche();
@@ -37,7 +44,7 @@ const All = () => {
                         <Title>{item?.series}</Title>
                     </Left>
                     <Right>
-                        <Title>{item.match_type+", "}</Title>
+                        <Title>{item.match_type + ", "}</Title>
                         <Title>{moment(item.date_wise, 'DD MMM YYYY, dddd').format('DD MMM YYYY, ddd,')} {item.match_time}</Title>
                     </Right>
                 </Header>
@@ -99,7 +106,7 @@ const All = () => {
         )
     }
 
-    if (loading) return <Loading />;
+    if (loading && matches.length === 0) return <Loading />;
     return (
         <Container>
             <FlatList
@@ -108,7 +115,10 @@ const All = () => {
                 ListHeaderComponent={ItemSeprator}
                 ItemSeparatorComponent={ItemSeprator}
                 ListEmptyComponent={NoMatchs}
-                keyExtractor={(item, index) => "key" + item.match_id}
+                keyExtractor={item => item.match_id.toString()}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             />
         </Container>
     )

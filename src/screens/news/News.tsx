@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/core";
-import React, { FC, useEffect, useState } from "react";
-import { FlatList } from "react-native";
+import React, { FC, useCallback, useEffect, useState } from "react";
+import { FlatList, RefreshControl } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import styled from "styled-components/native";
 import { getNews, News } from "../../config/axios";
@@ -9,6 +9,7 @@ import { Loading } from "../../components/Loading";
 const NewsComponent: FC = () => {
     const navigation: any = useNavigation();
     const [loading, setLoading] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
     const [news, setNews] = useState<Array<News>>([]);
 
     const getMatche = async () => {
@@ -18,9 +19,15 @@ const NewsComponent: FC = () => {
                 setNews(data.data.result)
             }
         } finally {
+            setRefreshing(false)
             setLoading(false);
         }
     }
+
+    const onRefresh = useCallback(async () => {
+        setRefreshing(true);
+        getMatche();
+    }, [refreshing]);
 
     useEffect(() => {
         getMatche();
@@ -40,7 +47,7 @@ const NewsComponent: FC = () => {
         );
     };
 
-    if (loading) return <Loading />;
+    if (loading && news.length === 0) return <Loading />;
     return (
         <BackgroundContainer>
             <Container>
@@ -49,6 +56,9 @@ const NewsComponent: FC = () => {
                         data={news}
                         renderItem={renderItem}
                         keyExtractor={(item, _) => item.news_id.toString()}
+                        refreshControl={
+                            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                        }
                     />
                 </GradientContainer>
             </Container>
