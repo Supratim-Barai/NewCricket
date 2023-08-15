@@ -18,7 +18,7 @@ const T10 = () => {
     
     const getMatche = async () => {
         try {
-            const { data } = await getUpcomingMatches("T10", 1, 15);
+            const { data } = await getUpcomingMatches("T10", 1, 5);
             if (!data?.error) {
                 setMatches(data.data.result);
                 setPage(1);

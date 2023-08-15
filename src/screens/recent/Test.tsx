@@ -17,7 +17,7 @@ const Test = () => {
 
     const getMatche = async () => {
         try {
-            const { data } = await getRecentMatches("Test", 1, 15);
+            const { data } = await getRecentMatches("Test", 1, 5);
             if (!data?.error) {
                 setMatches(data.data.result);
                 setPage(1);

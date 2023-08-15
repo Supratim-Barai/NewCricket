@@ -18,7 +18,7 @@ const T20 = () => {
     
     const getMatche = async () => {
         try {
-            const { data } = await getUpcomingMatches("T20", 1, 15);
+            const { data } = await getUpcomingMatches("T20", 1, 5);
             if (!data?.error) {
                 setMatches(data.data.result);
                 setPage(1);
