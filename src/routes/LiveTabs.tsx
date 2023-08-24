@@ -18,33 +18,8 @@ import { useNavigation } from "@react-navigation/native";
 import { useFocusEffect } from '@react-navigation/native';
 const Tab = createMaterialTopTabNavigator();
 
-const SOCKET_URL = "http://52.66.245.248:3001";
-
-// const socket = io(SOCKET_URL);
-
-// socket.on("connect", () => {
-//     console.log("connect", socket.id); // x8WIv7-mJelg7on_ALbx
-// });
-
-// socket.on("disconnect", () => {
-//     console.log("disconnect", socket.id); // undefined
-// });
-
-
 export function Live(props: any) {
     const matchId = props?.route?.params?.match_id;
-    // const dispatch = useAppDispatch();
-
-    // useFocusEffect(React.useCallback(() => {
-    //     const socket = io(SOCKET_URL);
-    //     dispatch(setLiveMatch(undefined));
-    //     socket.on("pullLiveScore", (res: any) => {
-    //         dispatch(setLiveMatch(res));
-    //     })
-    //     socket.emit("getLiveScore", { "match_id": `${matchId}` })
-    //     return () => socket.disconnect();
-    //   }, [matchId, dispatch]))
-
     return (
         <Tab.Navigator
             initialRouteName="Live_LiveMatch"

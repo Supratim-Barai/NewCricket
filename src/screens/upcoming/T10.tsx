@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
-import { FlatList, RefreshControl } from "react-native";
+import { ActivityIndicator, FlatList, RefreshControl, View } from "react-native";
 import styled from "styled-components/native";
 import { Card, ItemSeprator } from "../../ui";
 import LinearGradient from "react-native-linear-gradient";

@@ -137,3 +137,47 @@ export const getNews = () => {
     url: '/match/news'
   })
 }
+
+
+// Commentry API
+export interface CommentryData {
+  "commentary_id": number;
+  "inning": number;
+  "type": number;
+  "data": {
+    "title": string;
+    "description": string;
+    "over": string;
+    "overs": string;
+    "runs": string;
+    "wickets": string;
+    "team": string;
+    "team_score": string;
+    "team_wicket": string;
+    "batsman_1_name": string;
+    "batsman_1_runs": string;
+    "batsman_1_balls": string;
+    "bolwer_name": string;
+    "bolwer_overs": string;
+    "bolwer_maidens": string;
+    "bolwer_runs": string;
+    "bolwer_wickets": string;
+  }
+}
+interface CommentryDataResponse {
+  error: boolean;
+  message: string;
+  data: {
+    result: Record<string, Record<string, Array<CommentryData>>>;
+  }
+}
+
+export const getCommentries = (matchId: string) => {
+  const data = JSON.stringify({ matchId });
+  console.log("match/commentary", data);
+  return APIKit.request<CommentryDataResponse>({
+    method: "POST",
+    url: "/match/commentary",
+    data
+  })
+}

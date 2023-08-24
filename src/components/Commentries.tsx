@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, Fragment } from "react";
 import styled from "styled-components/native";
 import LinearGradient from "react-native-linear-gradient";
 import {
@@ -6,44 +6,51 @@ import {
     heightPercentageToDP as hp
 } from "react-native-responsive-screen";
 import { Circle } from "./Circle";
+import { CommentryData } from "../config/axios";
+import { ScrollView } from "react-native";
 
-export const Commentries: FC = () => {
+interface CommentriesProps {
+    comentries: {
+        [key: string]: Record<string, CommentryData[]>;
+    } | undefined;
+}
+
+export const Commentries: FC<CommentriesProps> = ({ comentries }) => {
+    console.log({ comentries })
+    const inning2 = comentries?.["2 Inning"] ?? {}, inning1 = comentries?.["1 Inning"] ?? {};
     return (
         <Container>
             <GradientContainer colors={['#33014a', '#07000a']}>
                 <Heading>
                     <HeadingText>COMMENTRY</HeadingText>
                 </Heading>
-                <Row>
-                    <Circle>6</Circle>
-                    <Over>0.6</Over>
-                    <Comment>MS DHONI TO PATTINSON, SIX RUNS, TO LONG OFF.</Comment>
-                </Row>
-                <Divider />
-                <Row>
-                    <Circle>6</Circle>
-                    <Over>0.6</Over>
-                    <Comment>MS DHONI TO PATTINSON, SIX RUNS, TO LONG OFF.</Comment>
-                </Row>
-                <Divider />
-                <Row>
-                    <Circle>6</Circle>
-                    <Over>0.6</Over>
-                    <Comment>MS DHONI TO PATTINSON, SIX RUNS, TO LONG OFF.</Comment>
-                </Row>
-                <Divider />
-                <Row>
-                    <Circle>6</Circle>
-                    <Over>0.6</Over>
-                    <Comment>MS DHONI TO PATTINSON, SIX RUNS, TO LONG OFF.</Comment>
-                </Row>
-                <Divider />
-                <Row>
-                    <Circle>6</Circle>
-                    <Over>0.6</Over>
-                    <Comment>MS DHONI TO PATTINSON, SIX RUNS, TO LONG OFF.</Comment>
-                </Row>
-                <Height />
+                <ScrollView>
+                    <Comment>Inning 2</Comment>
+                    {Object.values(inning2).map((commentries) => commentries.map(commentry => (
+                        <Fragment>
+                            <Row>
+                                <Circle>{commentry?.data?.over ?? commentry?.data?.overs?.[0]}</Circle>
+                                <Over>{commentry?.data?.over ?? commentry?.data?.overs}</Over>
+                                <Comment>{commentry?.data?.title}</Comment>
+                            </Row>
+                            {/* <Comment>{commentry?.data?.description}</Comment> */}
+                            <Divider />
+                        </Fragment>
+                    )))}
+                    <Comment>Inning 1</Comment>
+                    {Object.values(inning1).map((commentries) => commentries.map(commentry => (
+                        <Fragment>
+                            <Row>
+                                <Circle>{commentry?.data?.over ?? commentry?.data?.overs?.[0]}</Circle>
+                                <Over>{commentry?.data?.over ?? commentry?.data?.overs}</Over>
+                                <Comment>{commentry?.data?.title}</Comment>
+                            </Row>
+                            {/* <Comment>{commentry?.data?.description}</Comment> */}
+                            <Divider />
+                        </Fragment>
+                    )))}
+                    <Height />
+                </ScrollView>
             </GradientContainer>
         </Container>
     )
