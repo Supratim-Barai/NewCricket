@@ -10,7 +10,8 @@ import { Exchnage } from "./Exchange";
 import { ScrollView } from "react-native";
 import { LiveMatchAutoUpdate } from "./LiveMatchAutoUpdate";
 
-export const OddHistory: FC = () => {
+export const OddHistory: FC<{ seriesId: string }> = ({ seriesId }) => {
+    
     return (
         <Container>
             <ScrollView>

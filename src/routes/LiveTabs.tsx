@@ -9,7 +9,7 @@ import { Commentry } from "../screens/live/Commentry";
 import { BallByBall } from "../screens/live/BallByBall";
 import { LiveMatch } from "../screens/live/LiveMatch";
 import { MatchInfo } from "../screens/live/MatchInfo";
-// import { OddHistory } from "./OddHistory";
+import { OddHistory } from "../screens/live/OddHistory";
 // import { LiveChat } from "./LiveChat";
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -58,14 +58,15 @@ export function Live(props: any) {
             <Tab.Screen name="Live_MatchInfo">
                 {(props) => <MatchInfo  {...props} matchId={matchId} />}
             </Tab.Screen>
-            {/* <Tab.Screen name="Live_MatchInfo" component={MatchInfo} /> */}
             <Tab.Screen name="Live_ScoreCard">
                 {(props) => <ScoreCard  {...props} matchId={matchId} />}
             </Tab.Screen>
             <Tab.Screen name="Live_PointTable">
                 {(props) => <PointsTable  {...props} seriesId={seriesId} />}
             </Tab.Screen>
-            {/* <Tab.Screen name="Live_Commentry" component={Commentry} /> */}
+            <Tab.Screen name="Live_OddHistory">
+                {(props) => <OddHistory  {...props} seriesId={seriesId} />}
+            </Tab.Screen>
             <Tab.Screen name="Live_Commentry">
                 {(props) => <Commentry  {...props} matchId={matchId} />}
             </Tab.Screen>
@@ -80,6 +81,7 @@ const nameMap: Record<string, string> = {
     Live_MatchInfo: "Match Info",
     Live_ScoreCard: "Score Card",
     Live_PointTable: "Point Table",
+    Live_OddHistory: "Odd History",
     Live_Commentry: "Commentry",
     Live_BallByBall: "Ball By Ball",
     Live_MyEntry: "My Entry"
