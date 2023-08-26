@@ -8,14 +8,14 @@ import { Whatsapp } from "./Whatsapp";
 import { Session } from "./Session";
 import { Exchnage } from "./Exchange";
 import { ScrollView } from "react-native";
-import { LiveMatchAutoUpdate } from "./LiveMatchAutoUpdate";
+// import { LiveMatchAutoUpdate } from "./LiveMatchAutoUpdate";
 
 export const OddHistory: FC<{ seriesId: string }> = ({ seriesId }) => {
     
     return (
         <Container>
             <ScrollView>
-                <LiveMatchAutoUpdate />
+                {/* <LiveMatchAutoUpdate /> */}
                 <Exchnage />
                 <Session />
                 <Whatsapp />
