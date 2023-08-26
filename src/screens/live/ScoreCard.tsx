@@ -1,11 +1,35 @@
-import React from "react";
+/* eslint-disable prettier/prettier */
+import React, { FC, useCallback, useEffect, useState } from "react";
 import { ScrollView } from "react-native";
 import styled from "styled-components/native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { Container, GradientContainer, Col } from "../../styles";
+import { getScoreCard } from "../../config/axios";
 
-export const ScoreCard = (props:any) => {
-    console.log("Score Card", props);
+export const ScoreCard: FC<{ matchId: string }> = ({ matchId }) => {
+
+    const [scorecard, setscorecard] = useState();
+
+    const handleGetScorecard = useCallback(async () => {
+        try {
+            const { data } = await getScoreCard(matchId);
+            if (!data?.error) {
+                setscorecard(data.data.result.scorecard)
+            }
+        } catch (e) {
+
+        } finally {
+
+        }
+    }, [matchId, setscorecard])
+
+    useEffect(() => {
+        handleGetScorecard()
+    }, [])
+
+
+    console.log({ scorecard })
+
     return (
         <Container>
             <ScrollView>

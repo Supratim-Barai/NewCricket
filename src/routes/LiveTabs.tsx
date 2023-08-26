@@ -1,5 +1,7 @@
+/* eslint-disable prettier/prettier */
 import React from "react";
-// import { PointsTable } from "./PointsTable";
+
+import { PointsTable } from "../screens/live/PointsTable";
 // import { BetSlipsModal } from "../../components/BetSlipsModal";
 import { MyEntry } from "../screens/live/MyEntry";
 import { ScoreCard } from "../screens/live/ScoreCard";
@@ -20,6 +22,7 @@ const Tab = createMaterialTopTabNavigator();
 
 export function Live(props: any) {
     const matchId = props?.route?.params?.match_id;
+    const seriesId = props?.route?.params?.series_id;
     return (
         <Tab.Navigator
             initialRouteName="Live_LiveMatch"
@@ -56,8 +59,12 @@ export function Live(props: any) {
                 {(props) => <MatchInfo  {...props} matchId={matchId} />}
             </Tab.Screen>
             {/* <Tab.Screen name="Live_MatchInfo" component={MatchInfo} /> */}
-            <Tab.Screen name="Live_ScoreCard" component={ScoreCard} />
-            {/* <Tab.Screen name="Live_PointTable" component={PointsTable} /> */}
+            <Tab.Screen name="Live_ScoreCard">
+                {(props) => <ScoreCard  {...props} matchId={matchId} />}
+            </Tab.Screen>
+            <Tab.Screen name="Live_PointTable">
+                {(props) => <PointsTable  {...props} seriesId={seriesId} />}
+            </Tab.Screen>
             {/* <Tab.Screen name="Live_Commentry" component={Commentry} /> */}
             <Tab.Screen name="Live_Commentry">
                 {(props) => <Commentry  {...props} matchId={matchId} />}
@@ -72,7 +79,7 @@ const nameMap: Record<string, string> = {
     Live_LiveMatch: "Live Match",
     Live_MatchInfo: "Match Info",
     Live_ScoreCard: "Score Card",
-    // Live_PointTable: "Point Table",
+    Live_PointTable: "Point Table",
     Live_Commentry: "Commentry",
     Live_BallByBall: "Ball By Ball",
     Live_MyEntry: "My Entry"

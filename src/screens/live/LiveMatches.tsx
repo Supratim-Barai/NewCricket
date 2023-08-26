@@ -42,11 +42,14 @@ export const LiveMatches = ({ navigation }: any) => {
         getMatche();
     }, [])
 
+    console.log({ matches });
+
 
     const renderItem = ({ item: match }: { item: Match }) => (
         <Card activeOpacity={1} onPress={() => navigation.navigate("LiveStack_Live", {
             match_id: match.match_id,
-            screen: "Live_LiveMatch"
+            screen: "Live_LiveMatch",
+            series_id: match.series_id
         })}>
             <GradientContainer colors={['#33014a', '#07000a']}>
                 <Header>

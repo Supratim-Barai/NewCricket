@@ -16,7 +16,6 @@ interface CommentriesProps {
 }
 
 export const Commentries: FC<CommentriesProps> = ({ comentries }) => {
-    console.log({ comentries })
     const inning2 = comentries?.["2 Inning"] ?? {}, inning1 = comentries?.["1 Inning"] ?? {};
     return (
         <Container>

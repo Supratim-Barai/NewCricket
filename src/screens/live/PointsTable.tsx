@@ -1,10 +1,14 @@
-import React from "react";
+/* eslint-disable prettier/prettier */
+import React, { FC } from "react";
 import styled from "styled-components/native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { ScrollView, View } from "react-native";
 import { GradientContainer, Col } from "../../styles";
 
-export const PointsTable = () => {
+export const PointsTable: FC<{ seriesId: string }> = ({ seriesId }) => {
+
+    console.log("seriesId",seriesId);
+    
     return (
         <Container>
             <ScrollView>
