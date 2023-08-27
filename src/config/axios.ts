@@ -238,7 +238,7 @@ export interface Fallwicket {
 export interface scoreCard {
   team: Team;
   batsman: Array<Batsman>;
-  bowler: Array<Bowler>;
+  bolwer: Array<Bowler>;
   fallwicket: Array<Fallwicket>;
 }
 interface ScoreCardDataResponse {

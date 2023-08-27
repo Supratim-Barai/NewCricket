@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
-import React, { FC, useCallback, useEffect, useState } from "react";
-import { ScrollView } from "react-native";
+import React, { FC, Fragment, useCallback, useEffect, useState } from "react";
+import { ScrollView, Text } from "react-native";
 import styled from "styled-components/native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { Container, GradientContainer, Col } from "../../styles";
@@ -12,7 +12,8 @@ export const ScoreCard: FC<{ matchId: string }> = ({ matchId }) => {
 
     const handleGetScorecard = useCallback(async () => {
         try {
-            const { data } = await getScoreCard(matchId);
+            const { data } = await getScoreCard('3484');
+            console.log("Scrore Card", data)
             if (!data?.error) {
                 setscorecard(data.data.result.scorecard)
             }
@@ -33,116 +34,122 @@ export const ScoreCard: FC<{ matchId: string }> = ({ matchId }) => {
     return (
         <Container>
             <ScrollView>
-                <Table colors={['#5f026e', '#43045e']}>
-                    <Content>
-                        <Row style={{ marginBottom: 0 }}>
-                            <Col flex={50}><TableHeaderText style={{ textAlign: "left" }}>BATTING</TableHeaderText></Col>
-                            <Col flex={10}><TableHeaderText>R</TableHeaderText></Col>
-                            <Col flex={10}><TableHeaderText>B</TableHeaderText></Col>
-                            <Col flex={10}><TableHeaderText>4S</TableHeaderText></Col>
-                            <Col flex={10}><TableHeaderText>6S</TableHeaderText></Col>
-                            <Col flex={10}><TableHeaderText>SR</TableHeaderText></Col>
-                        </Row>
-                    </Content>
-                    <Divider />
-                    <Content>
-                        {batting.map((d, i) => (
-                            <Row key={i}>
-                                <Col flex={50}>
-                                    <TableText style={{ textAlign: "left" }}>{d.player}</TableText>
-                                    <TableCaptionText>PATTINSON</TableCaptionText>
-                                </Col>
-                                <Col flex={10}><TableText>{d.r}</TableText></Col>
-                                <Col flex={10}><TableText>{d.b}</TableText></Col>
-                                <Col flex={10}><TableText>{d._4s}</TableText></Col>
-                                <Col flex={10}><TableText>{d._6s}</TableText></Col>
-                                <Col flex={10}><TableText>{d.sr.toFixed(2)}</TableText></Col>
-                            </Row>
-                        ))}
-                    </Content>
-                    <Divider />
-                    <Content>
-                        <Row style={{ marginBottom: 0 }}>
-                            <Col flex={50}>
-                                <TableText style={{ textAlign: "left" }}>EXTRAS:</TableText>
-                            </Col>
-                            <Col flex={10}><TableText>B - 0</TableText></Col>
-                            <Col flex={10}><TableText>W - 4</TableText></Col>
-                            <Col flex={10}><TableText>NB - 4</TableText></Col>
-                            <Col flex={10}><TableText>P - 0</TableText></Col>
-                            <Col flex={10}><TableText>= 08</TableText></Col>
-                        </Row>
-                    </Content>
-                    <Divider />
-                    <Content>
-                        <Row style={{ marginBottom: 0 }}>
-                            <Col flex={50}>
-                                <TableText style={{ textAlign: "left" }}>TOTAL</TableText>
-                            </Col>
-                            <Col flex={25}><TableText style={{ textAlign: "left" }}>150 - 6 (20.0)</TableText></Col>
-                            <Col flex={25}><TableText style={{ textAlign: "right" }}>CRR - 8.30</TableText></Col>
-                        </Row>
-                    </Content>
-                </Table>
-                <Table>
-                    <Content>
-                        <Row style={{ marginBottom: 0 }}>
-                            <Col flex={50}><TableHeaderText style={{ textAlign: "left" }}>BOWLING</TableHeaderText></Col>
-                            <Col flex={10}><TableHeaderText>O</TableHeaderText></Col>
-                            <Col flex={10}><TableHeaderText>M</TableHeaderText></Col>
-                            <Col flex={10}><TableHeaderText>R</TableHeaderText></Col>
-                            <Col flex={10}><TableHeaderText>W</TableHeaderText></Col>
-                            <Col flex={10}><TableHeaderText>ECO</TableHeaderText></Col>
-                        </Row>
-                    </Content>
-                    <Divider />
-                    <Content>
-                        {bowling.map((d, i) => (
-                            <Row key={i}>
-                                <Col flex={50}>
-                                    <TableText style={{ textAlign: "left" }}>{d.player}</TableText>
-                                </Col>
-                                <Col flex={10}><TableText>{d.o}</TableText></Col>
-                                <Col flex={10}><TableText>{d.m}</TableText></Col>
-                                <Col flex={10}><TableText>{d.r}</TableText></Col>
-                                <Col flex={10}><TableText>{d.w}</TableText></Col>
-                                <Col flex={10}><TableText>{d.eco.toFixed(2)}</TableText></Col>
-                            </Row>
-                        ))}
-                    </Content>
-                </Table>
-                <Table style={{
-                    borderBottomLeftRadius: 30,
-                    borderBottomRightRadius: 30,
-                    marginBottom: 15
-                }}>
-                    <Content>
-                        <Row style={{ marginBottom: 0 }}>
-                            <Col flex={70}><TableHeaderText style={{ textAlign: "left" }}>FALL OF WICKETS</TableHeaderText></Col>
-                            <Col flex={15}><TableHeaderText>SCORE</TableHeaderText></Col>
-                            <Col flex={15}><TableHeaderText>OVER</TableHeaderText></Col>
-                        </Row>
-                    </Content>
-                    <Divider />
-                    <Content>
-                        <Row>
-                            <Col flex={70}>
-                                <TableText style={{ textAlign: "left" }}>MS DHONI</TableText>
-                            </Col>
-                            <Col flex={15}><TableText>20 - 1</TableText></Col>
-                            <Col flex={15}><TableText>3.3</TableText></Col>
-                        </Row>
-                        <Row>
-                            <Col flex={70}>
-                                <TableText style={{ textAlign: "left" }}>SURESH RAINA</TableText>
-                            </Col>
-                            <Col flex={15}><TableText>14 - 1</TableText></Col>
-                            <Col flex={15}><TableText>5.2</TableText></Col>
-                        </Row>
-                    </Content>
-                </Table>
+                {scorecard?.[1] ? <ScoreBoard data={scorecard?.[1]} /> : null}
+                {scorecard?.[2] ? <ScoreBoard data={scorecard?.[2]} /> : null}
             </ScrollView>
         </Container>
+    )
+}
+
+interface ScoreBoardProps {
+    data: scoreCard;
+}
+
+const ScoreBoard: FC<ScoreBoardProps> = ({ data }) => {
+    const { batsman, bolwer, team, fallwicket } = data;
+    return (
+        <Fragment>
+            <Text style={{ textAlign: "center", marginBottom: 10, marginTop: 10, fontSize: 20 }}>{team.name}</Text>
+            <Table colors={['#5f026e', '#43045e']}>
+                <Content>
+                    <Row style={{ marginBottom: 0 }}>
+                        <Col flex={50}><TableHeaderText style={{ textAlign: "left" }}>BATTING</TableHeaderText></Col>
+                        <Col flex={10}><TableHeaderText>R</TableHeaderText></Col>
+                        <Col flex={10}><TableHeaderText>B</TableHeaderText></Col>
+                        <Col flex={10}><TableHeaderText>4S</TableHeaderText></Col>
+                        <Col flex={10}><TableHeaderText>6S</TableHeaderText></Col>
+                        <Col flex={10}><TableHeaderText>SR</TableHeaderText></Col>
+                    </Row>
+                </Content>
+                <Divider />
+                <Content>
+                    {batsman?.map((d) => (
+                        <Row key={d.player_id}>
+                            <Col flex={50}>
+                                <TableText style={{ textAlign: "left" }}>{d.name}</TableText>
+                                <TableCaptionText>{d.out_by}</TableCaptionText>
+                            </Col>
+                            <Col flex={10}><TableText>{d.run}</TableText></Col>
+                            <Col flex={10}><TableText>{d.ball}</TableText></Col>
+                            <Col flex={10}><TableText>{d.fours}</TableText></Col>
+                            <Col flex={10}><TableText>{d.sixes}</TableText></Col>
+                            <Col flex={10}><TableText>{d.strike_rate}</TableText></Col>
+                        </Row>
+                    ))}
+                </Content>
+                <Divider />
+                <Content>
+                    <Row style={{ marginBottom: 0 }}>
+                        <Col flex={50}>
+                            <TableText style={{ textAlign: "left" }}>EXTRAS:</TableText>
+                        </Col>
+                        <Col flex={50}><TableText>{team.extras}</TableText></Col>
+                    </Row>
+                </Content>
+                <Divider />
+                <Content>
+                    <Row style={{ marginBottom: 0 }}>
+                        <Col flex={50}>
+                            <TableText style={{ textAlign: "left" }}>TOTAL</TableText>
+                        </Col>
+                        <Col flex={25}><TableText style={{ textAlign: "left" }}>{team.score}-{team.wicket}({team.over})</TableText></Col>
+                        <Col flex={25}><TableText style={{ textAlign: "right" }}>CRR - 8.30</TableText></Col>
+                    </Row>
+                </Content>
+            </Table>
+            <Table>
+                <Content>
+                    <Row style={{ marginBottom: 0 }}>
+                        <Col flex={50}><TableHeaderText style={{ textAlign: "left" }}>BOWLING</TableHeaderText></Col>
+                        <Col flex={10}><TableHeaderText>O</TableHeaderText></Col>
+                        <Col flex={10}><TableHeaderText>M</TableHeaderText></Col>
+                        <Col flex={10}><TableHeaderText>R</TableHeaderText></Col>
+                        <Col flex={10}><TableHeaderText>W</TableHeaderText></Col>
+                        <Col flex={10}><TableHeaderText>ECO</TableHeaderText></Col>
+                    </Row>
+                </Content>
+                <Divider />
+                <Content>
+                    {bolwer?.map((d) => (
+                        <Row key={d.player_id}>
+                            <Col flex={50}>
+                                <TableText style={{ textAlign: "left" }}>{d.name}</TableText>
+                            </Col>
+                            <Col flex={10}><TableText>{d.over}</TableText></Col>
+                            <Col flex={10}><TableText>{d.maiden}</TableText></Col>
+                            <Col flex={10}><TableText>{d.run}</TableText></Col>
+                            <Col flex={10}><TableText>{d.wicket}</TableText></Col>
+                            <Col flex={10}><TableText>{d.economy}</TableText></Col>
+                        </Row>
+                    ))}
+                </Content>
+            </Table>
+            <Table style={{
+                borderBottomLeftRadius: 30,
+                borderBottomRightRadius: 30,
+                marginBottom: 15
+            }}>
+                <Content>
+                    <Row style={{ marginBottom: 0 }}>
+                        <Col flex={70}><TableHeaderText style={{ textAlign: "left" }}>FALL OF WICKETS</TableHeaderText></Col>
+                        <Col flex={15}><TableHeaderText>SCORE</TableHeaderText></Col>
+                        <Col flex={15}><TableHeaderText>OVER</TableHeaderText></Col>
+                    </Row>
+                </Content>
+                <Divider />
+                <Content>
+                    {fallwicket?.map((d, i) => (
+                        <Row key={i.toString()}>
+                            <Col flex={70}>
+                                <TableText style={{ textAlign: "left" }}>{d.player}</TableText>
+                            </Col>
+                            <Col flex={15}><TableText>{d.score} - {d.wicket}</TableText></Col>
+                            <Col flex={15}><TableText>{d.over}</TableText></Col>
+                        </Row>
+                    ))}
+                </Content>
+            </Table>
+        </Fragment>
     )
 }
 
@@ -240,7 +247,7 @@ const TableText = styled.Text`
 `;
 
 const TableCaptionText = styled.Text`
-    color: #000;
+    color: #ccc;
     font-size: ${hp(1)}px;
     font-family: 'Roboto-Bold';
     text-align: left;
