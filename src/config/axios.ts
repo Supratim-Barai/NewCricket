@@ -282,3 +282,56 @@ export const getPointTable = (seriesId: string) => {
     data,
   });
 };
+
+// Odds History
+
+interface OddsHistoryDataResponse {
+  error: boolean;
+  message: string;
+  data: {
+    result: {};
+  };
+}
+export const getOddsHistory = (seriesId: string) => {
+  const data = JSON.stringify({seriesId});
+  console.log('match/oddsHistory', data);
+  return APIKit.request<OddsHistoryDataResponse>({
+    method: 'POST',
+    url: '/match/oddsHistory',
+    data,
+  });
+};
+
+// Match Squad
+
+export interface Player {
+  image: string;
+  player_id: string;
+  name: string;
+  play_role: string;
+}
+export interface TeamSqad {
+  name: string;
+  short_name: string;
+  flag: string;
+  player: Array<Player>;
+}
+interface MatchSquadDataResponse {
+  error: boolean;
+  message: string;
+  data: {
+    result: {
+      [key: string]: TeamSqad;
+    };
+  };
+}
+
+export const getMatchSquad = (matchId: string) => {
+  const data = JSON.stringify({matchId});
+  console.log('match/matchSquad', data);
+  return APIKit.request<MatchSquadDataResponse>({
+    method: 'POST',
+    url: '/match/matchSquad',
+    data,
+  });
+};
