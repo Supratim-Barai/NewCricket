@@ -4,11 +4,11 @@ import { ScrollView } from "react-native";
 import styled from "styled-components/native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { Container, GradientContainer, Col } from "../../styles";
-import { getScoreCard } from "../../config/axios";
+import { getScoreCard, scoreCard } from "../../config/axios";
 
 export const ScoreCard: FC<{ matchId: string }> = ({ matchId }) => {
 
-    const [scorecard, setscorecard] = useState();
+    const [scorecard, setscorecard] = useState<{ [key: number]: scoreCard }>();
 
     const handleGetScorecard = useCallback(async () => {
         try {

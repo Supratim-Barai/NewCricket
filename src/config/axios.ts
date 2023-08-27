@@ -235,7 +235,12 @@ export interface Fallwicket {
   wicket: string;
   over: string;
 }
-
+export interface scoreCard {
+  team: Team;
+  batsman: Array<Batsman>;
+  bowler: Array<Bowler>;
+  fallwicket: Array<Fallwicket>;
+}
 interface ScoreCardDataResponse {
   error: boolean;
   message: string;
@@ -243,18 +248,7 @@ interface ScoreCardDataResponse {
     result: {
       result: string;
       scorecard: {
-        1: {
-          team: Team;
-          batsman: Array<Batsman>;
-          bowler: Array<Bowler>;
-          fallwicket: Array<Fallwicket>;
-        };
-        2: {
-          team: Team;
-          batsman: Array<Batsman>;
-          bowler: Array<Bowler>;
-          fallwicket: Array<Fallwicket>;
-        };
+        [key: number]: scoreCard;
       };
     };
   };
