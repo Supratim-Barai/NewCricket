@@ -12,7 +12,7 @@ export const ScoreCard: FC<{ matchId: string }> = ({ matchId }) => {
 
     const handleGetScorecard = useCallback(async () => {
         try {
-            const { data } = await getScoreCard('3484');
+            const { data } = await getScoreCard(matchId);
             console.log("Scrore Card", data)
             if (!data?.error) {
                 setscorecard(data.data.result.scorecard)
@@ -49,7 +49,7 @@ const ScoreBoard: FC<ScoreBoardProps> = ({ data }) => {
     const { batsman, bolwer, team, fallwicket } = data;
     return (
         <Fragment>
-            <Text style={{ textAlign: "center", marginBottom: 10, marginTop: 10, fontSize: 20 }}>{team.name}</Text>
+            <Text style={{ textAlign: "center", marginBottom: 10, marginTop: 10, fontSize: 14, color: "#fff" }}>{team.name}</Text>
             <Table colors={['#5f026e', '#43045e']}>
                 <Content>
                     <Row style={{ marginBottom: 0 }}>
