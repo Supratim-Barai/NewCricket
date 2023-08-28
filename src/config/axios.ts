@@ -311,8 +311,8 @@ interface OddsHistoryDataResponse {
     };
   };
 }
-export const getOddsHistory = (seriesId: string) => {
-  const data = JSON.stringify({seriesId});
+export const getOddsHistory = (matchId: string) => {
+  const data = JSON.stringify({matchId});
   console.log('match/oddsHistory', data);
   return APIKit.request<OddsHistoryDataResponse>({
     method: 'POST',
