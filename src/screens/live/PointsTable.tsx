@@ -1,14 +1,35 @@
 /* eslint-disable prettier/prettier */
-import React, { FC } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import styled from "styled-components/native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { ScrollView, View } from "react-native";
 import { GradientContainer, Col } from "../../styles";
+import { PointTable, getPointTable } from "../../config/axios";
 
 export const PointsTable: FC<{ seriesId: string }> = ({ seriesId }) => {
 
-    console.log("seriesId",seriesId);
-    
+    console.log("seriesId", seriesId);
+
+    const [pointsTable, setPointsTable] = useState<Array<PointTable>>();
+
+
+    const handleGetPointsTable = useCallback(async () => {
+        try {
+            const { data } = await getPointTable(seriesId);
+            if (!data?.error) {
+                setPointsTable(data.data.result)
+            }
+        } catch (e) {
+
+        } finally {
+
+        }
+    }, [seriesId])
+
+    useEffect(() => {
+        handleGetPointsTable()
+    }, [])
+
     return (
         <Container>
             <ScrollView>
@@ -20,14 +41,14 @@ export const PointsTable: FC<{ seriesId: string }> = ({ seriesId }) => {
                             <Col flex={10}><TableHeaderText>W</TableHeaderText></Col>
                             <Col flex={10}><TableHeaderText>L</TableHeaderText></Col>
                             <Col flex={10}><TableHeaderText>NR</TableHeaderText></Col>
-                            <Col flex={10}><TableHeaderText>CR</TableHeaderText></Col>
+                            {/* <Col flex={10}><TableHeaderText>CR</TableHeaderText></Col> */}
                             <Col flex={10}><TableHeaderText>NRR</TableHeaderText></Col>
                             <Col flex={10}><TableHeaderText>PTS</TableHeaderText></Col>
                         </Row>
                     </Content>
                     <Divider />
                     <Content>
-                        {data.map((d, i) => (
+                        {pointsTable && pointsTable.map((d, i) => (
                             <Row key={i}>
                                 <Col flex={30}>
                                     <View style={{
@@ -35,16 +56,16 @@ export const PointsTable: FC<{ seriesId: string }> = ({ seriesId }) => {
                                         alignItems: "flex-start"
                                     }}>
                                         <Logo source={require("../../assets/images/mi.jpeg")} />
-                                        <TableText>{d.team.name}</TableText>
+                                        <TableText>{d.teams}</TableText>
                                     </View>
                                 </Col>
-                                <Col flex={10}><TableText>{d.p}</TableText></Col>
-                                <Col flex={10}><TableText>{d.w}</TableText></Col>
-                                <Col flex={10}><TableText>{d.l}</TableText></Col>
-                                <Col flex={10}><TableText>{d.nr}</TableText></Col>
-                                <Col flex={10}><TableText>{d.cr}</TableText></Col>
-                                <Col flex={10}><TableText>{d.nrr}</TableText></Col>
-                                <Col flex={10}><TableText>{d.pts}</TableText></Col>
+                                <Col flex={10}><TableText>{d.P}</TableText></Col>
+                                <Col flex={10}><TableText>{d.W}</TableText></Col>
+                                <Col flex={10}><TableText>{d.L}</TableText></Col>
+                                <Col flex={10}><TableText>{d.NR}</TableText></Col>
+                                {/* <Col flex={10}><TableText>{d.}</TableText></Col> */}
+                                <Col flex={10}><TableText>{d.NRR}</TableText></Col>
+                                <Col flex={10}><TableText>{d.Pts}</TableText></Col>
                             </Row>
                         ))}
                     </Content>

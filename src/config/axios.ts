@@ -265,11 +265,22 @@ export const getScoreCard = (matchId: string) => {
 };
 
 //PointsTable API
+
+export interface PointTable {
+  teams: string;
+  flag: string;
+  P: string;
+  W: string;
+  L: string;
+  NR: string;
+  Pts: string;
+  NRR: string;
+}
 interface PointsTableDataResponse {
   error: boolean;
   message: string;
   data: {
-    result: {};
+    result: Array<PointTable>;
   };
 }
 
