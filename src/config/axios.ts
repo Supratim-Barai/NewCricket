@@ -296,11 +296,19 @@ export const getPointTable = (seriesId: string) => {
 
 // Odds History
 
+export interface OddsHistory {
+  name: string;
+  short_name: string;
+  flag: string;
+  player:Array<Player>;
+}
 interface OddsHistoryDataResponse {
   error: boolean;
   message: string;
   data: {
-    result: {};
+    result: {
+      [key: string]: OddsHistory;
+    };
   };
 }
 export const getOddsHistory = (seriesId: string) => {

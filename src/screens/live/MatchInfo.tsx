@@ -57,9 +57,9 @@ export const MatchInfo: FC<{ matchId: string }> = ({ matchId }) => {
     useFocusEffect(React.useCallback(() => {
         const socket = io(SOCKET_URL);
         socket.on("pullInfo", setInfo);
-        // socket.on("pullSquads", setSquads);
+        socket.on("pullSquads", setSquads);
         socket.emit("getInfo", { "match_id": `${matchId}` });
-        // socket.emit("getSquads", { "match_id": `${matchId}` });
+        socket.emit("getSquads", { "match_id": `${matchId}` });
         return () => socket.disconnect();
     }, [matchId]))
 
