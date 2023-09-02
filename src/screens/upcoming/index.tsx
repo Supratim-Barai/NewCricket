@@ -1,23 +1,15 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import All from "./All";
 import T20 from "./T20";
 import Odi from "./Odi";
 import Test from "./Test";
 import T10 from "./T10";
 
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { useAppDispatch } from "../../store";
-import { getAllUpcomingGames } from "../../store/features/upcoming.slice";
 
 const Tab = createMaterialTopTabNavigator();
 
 export function Upcoming() {
-    const dispatch = useAppDispatch();
-
-    useEffect(() => {
-        dispatch(getAllUpcomingGames());
-    }, [dispatch])
-
     return (
         <Tab.Navigator
             initialRouteName="Upcoming_All"
@@ -46,11 +38,41 @@ export function Upcoming() {
                 }
             })}
         >
-            <Tab.Screen name="Upcoming_All" component={All} />
-            <Tab.Screen name="Upcoming_T20" component={T20} />
-            <Tab.Screen name="Upcoming_Odi" component={Odi} />
-            <Tab.Screen name="Upcoming_Test" component={Test} />
-            <Tab.Screen name="Upcoming_T10" component={T10} />
+            <Tab.Screen
+                name="Upcoming_All"
+                component={All}
+                options={{
+                    lazy: true
+                }}
+            />
+            <Tab.Screen
+                name="Upcoming_T20"
+                component={T20}
+                options={{
+                    lazy: true
+                }}
+            />
+            <Tab.Screen
+                name="Upcoming_Odi"
+                component={Odi}
+                options={{
+                    lazy: true
+                }}
+            />
+            <Tab.Screen
+                name="Upcoming_Test"
+                component={Test}
+                options={{
+                    lazy: true
+                }}
+            />
+            <Tab.Screen
+                name="Upcoming_T10"
+                component={T10}
+                options={{
+                    lazy: true
+                }}
+            />
         </Tab.Navigator>
     );
 }

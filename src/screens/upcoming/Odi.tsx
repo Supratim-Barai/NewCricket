@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from "react";
+import React from "react";
 import { ActivityIndicator, FlatList, RefreshControl, View } from "react-native";
 import styled from "styled-components/native";
 import { Card, ItemSeprator } from "../../ui";
@@ -7,50 +7,12 @@ import { NoMatchs } from "./NoMatchs";
 // import { useAppSelector } from "../../store";
 import { Loading } from "../../components/Loading";
 // import { Match } from "../../store/features/upcoming.slice";
-import { getUpcomingMatches, Match } from "../../config/axios";
+import { Match } from "../../config/axios";
 import moment from "moment";
+import { useGetUpcomingMatches } from "../../hooks/use-get-upcoming-matches";
+
 const Odi = () => {
-    const [refreshing, setRefreshing] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [matches, setMatches] = useState<Array<Match>>([]);
-    const [page, setPage] = useState(1);
-
-    const getMatche = async () => {
-        try {
-            const { data } = await getUpcomingMatches("ODI", 1, 5);
-            if (!data?.error) {
-                setMatches(data.data.result);
-                setPage(1);
-            }
-        } finally {
-            setLoading(false);
-            setRefreshing(false);
-        }
-    }
-
-    const fetchMore = useCallback(async () => {
-        if (loading) return;
-        try {
-            setLoading(true);
-            console.log("page====", page + 1)
-            const { data } = await getUpcomingMatches("ODI", page + 1, 5);
-            if (!data?.error) {
-                setMatches(results => [...results, ...data.data.result])
-                setPage(page => page + 1);
-            }
-        } finally {
-            setLoading(false);
-        }
-    }, [loading, page]);
-
-    const onRefresh = useCallback(async () => {
-        setRefreshing(true);
-        getMatche();
-    }, [refreshing]);
-
-    useEffect(() => {
-        getMatche();
-    }, [])
+    const { refreshing, isReachedEnd, loading, matches, fetchMore, onRefresh } = useGetUpcomingMatches("ODI")
 
     const renderItem = ({ item }: { item: Match }) => {
         return (
@@ -131,7 +93,7 @@ const Odi = () => {
 
         </View>
     )
-    
+
     if (loading && matches.length === 0) return <Loading />;
     return (
         <Container>
@@ -146,7 +108,7 @@ const Odi = () => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
                 onEndReachedThreshold={0.2}
-                onEndReached={fetchMore}
+                onEndReached={isReachedEnd ? undefined : fetchMore}
                 ListFooterComponent={renderFooter}
             />
         </Container>

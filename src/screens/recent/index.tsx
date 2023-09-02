@@ -1,23 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import All from "./All";
 import T20 from "./T20";
 import Odi from "./Odi";
 import Test from "./Test";
 import T10 from "./T10";
 
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { useAppDispatch } from "../../store";
-import { getAllRecentGames } from "../../store/features/recent.slice";
-
 const Tab = createMaterialTopTabNavigator();
 
 export function Recent() {
-    const dispatch = useAppDispatch();
-
-    useEffect(() => {
-        dispatch(getAllRecentGames());
-    }, [dispatch])
-
     return (
         <Tab.Navigator
             initialRouteName="Recent_All"
@@ -46,11 +37,41 @@ export function Recent() {
                 }
             })}
         >
-            <Tab.Screen name="Recent_All" component={All} />
-            <Tab.Screen name="Recent_T20" component={T20} />
-            <Tab.Screen name="Recent_Odi" component={Odi} />
-            <Tab.Screen name="Recent_Test" component={Test} />
-            <Tab.Screen name="Recent_T10" component={T10} />
+            <Tab.Screen
+                name="Recent_All"
+                component={All}
+                options={{
+                    lazy: true
+                }}
+            />
+            <Tab.Screen
+                name="Recent_T20"
+                component={T20}
+                options={{
+                    lazy: true
+                }}
+            />
+            <Tab.Screen
+                name="Recent_Odi"
+                component={Odi}
+                options={{
+                    lazy: true
+                }}
+            />
+            <Tab.Screen
+                name="Recent_Test"
+                component={Test}
+                options={{
+                    lazy: true
+                }}
+            />
+            <Tab.Screen
+                name="Recent_T10"
+                component={T10}
+                options={{
+                    lazy: true
+                }}
+            />
         </Tab.Navigator>
     );
 }

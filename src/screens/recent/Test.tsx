@@ -1,58 +1,18 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import { ActivityIndicator, FlatList, RefreshControl, View } from "react-native";
 import styled from "styled-components/native";
 import { Loading } from "../../components/Loading";
-// import { useAppSelector } from "../../store";
-// import { Match } from "../../store/features/recent.slice";
 import { Card, ItemSeprator } from "../../ui";
 import { NoMatchs } from "./NoMatchs";
-import { getRecentMatches, Match } from "../../config/axios";
+import { Match } from "../../config/axios";
+import { useGetRecentMatches } from "../../hooks/use-get-recent-matches";
 
 const Test = () => {
-    const [refreshing, setRefreshing] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [matches, setMatches] = useState<Array<Match>>([]);
-    const [page, setPage] = useState(1);
-
-    const getMatche = async () => {
-        try {
-            const { data } = await getRecentMatches("Test", 1, 5);
-            if (!data?.error) {
-                setMatches(data.data.result);
-                setPage(1);
-            }
-        } finally {
-            setRefreshing(false);
-            setLoading(false);
-        }
-    }
-
-    const onRefresh = useCallback(async () => {
-        setRefreshing(true);
-        getMatche();
-    }, [refreshing]);
-
-    const fetchMore = useCallback(async () => {
-        if (loading) return;
-        try {
-            setLoading(true);
-            console.log("page====", page + 1)
-            const { data } = await getRecentMatches("Test", page + 1, 5);
-            if (!data?.error) {
-                setMatches(results => [...results, ...data.data.result])
-                setPage(page => page + 1);
-            }
-        } finally {
-            setLoading(false);
-        }
-    }, [loading, page]);
-
-    useEffect(() => {
-        getMatche();
-    }, [])
+    const { refreshing, isReachedEnd, loading, matches, fetchMore, onRefresh } = useGetRecentMatches("Test");
 
     const navigation: any = useNavigation();
+
     const renderItem = ({ item }: { item: Match }) => {
         return (
             <Card>
@@ -108,7 +68,6 @@ const Test = () => {
             padding: 8
         }}>
             {loading && <ActivityIndicator />}
-
         </View>
     )
 
@@ -126,7 +85,7 @@ const Test = () => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
                 onEndReachedThreshold={0.2}
-                onEndReached={fetchMore}
+                onEndReached={isReachedEnd ? undefined : fetchMore}
                 ListFooterComponent={renderFooter}
             />
         </Container>
@@ -247,10 +206,10 @@ const Score = styled.Text`
 `;
 
 const TeamName = styled.Text`
-color: #fff;
-font-family: 'Roboto-Black';
-font-size: 14px;
-margin-right: 8px;
+    color: #fff;
+    font-family: 'Roboto-Black';
+    font-size: 14px;
+    margin-right: 8px;
 `;
 
 

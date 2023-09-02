@@ -1,57 +1,16 @@
-import React, { FC, useCallback, useEffect, useState } from "react";
+import React from "react";
 import { ActivityIndicator, FlatList, RefreshControl, View } from "react-native";
 import styled from "styled-components/native";
 import { Card, ItemSeprator } from "../../ui";
 import LinearGradient from "react-native-linear-gradient";
 import { NoMatchs } from "./NoMatchs";
-// import { useAppSelector } from "../../store";
 import { Loading } from "../../components/Loading";
-// import { Match } from "../../store/features/upcoming.slice";
-import { getUpcomingMatches,Match } from "../../config/axios";
+import { Match } from "../../config/axios";
 import moment from "moment";
+import { useGetUpcomingMatches } from "../../hooks/use-get-upcoming-matches";
 
 const T20 = () => {
-    const [refreshing, setRefreshing] = useState(false);
-    const [loading, setLoading] = useState(true);
-    const [matches, setMatches] = useState<Array<Match>>([]);
-    const [page, setPage] = useState(1);
-    
-    const getMatche = async () => {
-        try {
-            const { data } = await getUpcomingMatches("T20", 1, 5);
-            if (!data?.error) {
-                setMatches(data.data.result);
-                setPage(1);
-            }
-        } finally {
-            setLoading(false);
-            setRefreshing(false);
-        }
-    }
-
-    const onRefresh = useCallback(async () => {
-        setRefreshing(true);
-        getMatche();
-    }, [refreshing]);
-
-    const fetchMore = useCallback(async () => {
-        if (loading) return;
-        try {
-            setLoading(true);
-            console.log("page====", page + 1)
-            const { data } = await getUpcomingMatches("T20", page + 1, 5);
-            if (!data?.error) {
-                setMatches(results => [...results, ...data.data.result])
-                setPage(page => page + 1);
-            }
-        } finally {
-            setLoading(false);
-        }
-    }, [loading, page]);
-
-    useEffect(() => {
-        getMatche();
-    }, [])
+    const { refreshing, isReachedEnd, loading, matches, fetchMore, onRefresh } = useGetUpcomingMatches("T20");
 
     const renderItem = ({ item }: { item: Match }) => {
         return (
@@ -147,7 +106,7 @@ const T20 = () => {
                     <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
                 onEndReachedThreshold={0.2}
-                onEndReached={fetchMore}
+                onEndReached={isReachedEnd ? undefined : fetchMore}
                 ListFooterComponent={renderFooter}
             />
         </Container>
