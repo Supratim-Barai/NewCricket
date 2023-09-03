@@ -17,6 +17,7 @@ interface CommentriesProps {
 
 export const Commentries: FC<CommentriesProps> = ({ comentries }) => {
     const inning2 = comentries?.["2 Inning"] ?? {}, inning1 = comentries?.["1 Inning"] ?? {};
+    const inning1Arr = Object.values(inning1), inning2Arr = Object.values(inning2);
     return (
         <Container>
             <GradientContainer colors={['#33014a', '#07000a']}>
@@ -24,7 +25,7 @@ export const Commentries: FC<CommentriesProps> = ({ comentries }) => {
                     <HeadingText>COMMENTRY</HeadingText>
                 </Heading>
                 <ScrollView>
-                    <Comment>Inning 2</Comment>
+                    {inning2Arr?.length > 0 ? <Title>Commentries of Inning 2</Title> : null}
                     {Object.values(inning2).map((commentries) => commentries.map(commentry => (
                         <Fragment>
                             <Row>
@@ -32,11 +33,10 @@ export const Commentries: FC<CommentriesProps> = ({ comentries }) => {
                                 <Over>{commentry?.data?.over ?? commentry?.data?.overs}</Over>
                                 <Comment>{commentry?.data?.title}</Comment>
                             </Row>
-                            {/* <Comment>{commentry?.data?.description}</Comment> */}
                             <Divider />
                         </Fragment>
                     )))}
-                    <Comment>Inning 1</Comment>
+                    {inning1Arr?.length > 0 ? <Title>Commentries of Inning 1</Title> : null}
                     {Object.values(inning1).map((commentries) => commentries.map(commentry => (
                         <Fragment>
                             <Row>
@@ -44,7 +44,6 @@ export const Commentries: FC<CommentriesProps> = ({ comentries }) => {
                                 <Over>{commentry?.data?.over ?? commentry?.data?.overs}</Over>
                                 <Comment>{commentry?.data?.title}</Comment>
                             </Row>
-                            {/* <Comment>{commentry?.data?.description}</Comment> */}
                             <Divider />
                         </Fragment>
                     )))}
@@ -54,6 +53,18 @@ export const Commentries: FC<CommentriesProps> = ({ comentries }) => {
         </Container>
     )
 }
+
+
+
+
+const Title = styled.Text`
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+`;
 
 const Height = styled.View`
     height: 10px;
