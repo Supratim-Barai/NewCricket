@@ -73,13 +73,25 @@ export function Live(props: any) {
                 }
             })}
         >
-            <Tab.Screen name="Live_LiveMatch" component={LiveMatch} />
-            <Tab.Screen name="Live_MatchInfo" component={MatchInfo} />
-            <Tab.Screen name="Live_ScoreCard" component={ScoreCard} />
+            <Tab.Screen name="Live_LiveMatch" component={LiveMatch} options={{
+                    lazy: true
+                }}/>
+            <Tab.Screen name="Live_MatchInfo" component={MatchInfo} options={{
+                    lazy: true
+                }}/>
+            <Tab.Screen name="Live_ScoreCard" component={ScoreCard} options={{
+                    lazy: true
+                }}/>
             {/* <Tab.Screen name="Live_PointTable" component={PointsTable} /> */}
-            <Tab.Screen name="Live_Commentry" component={Commentry} />
-            <Tab.Screen name="Live_BallByBall" component={BallByBall} />
-            <Tab.Screen name="Live_MyEntry" component={MyEntry} />
+            <Tab.Screen name="Live_Commentry" component={Commentry} options={{
+                    lazy: true
+                }}/>
+            <Tab.Screen name="Live_BallByBall" component={BallByBall} options={{
+                    lazy: true
+                }}/>
+            <Tab.Screen name="Live_MyEntry" component={MyEntry} options={{
+                    lazy: true
+                }}/>
         </Tab.Navigator>
     );
 }

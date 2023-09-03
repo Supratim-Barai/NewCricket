@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { FC } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import { Container, GradientContainer } from "../../styles";
 import { CurrentScoreCard } from "./CurrentScoreCard";
 import { CurrentPartnership } from "./CurrentPartnership";
@@ -7,7 +7,7 @@ import { CurrentPartnership } from "./CurrentPartnership";
 import { Whatsapp } from "./Whatsapp";
 import { Session } from "./Session";
 import { Exchnage } from "./Exchange";
-import { ActivityIndicator, ScrollView, View } from "react-native";
+import { ActivityIndicator, Alert, ScrollView, View } from "react-native";
 import { useAppDispatch, useAppSelector } from "../../store";
 import styled from "styled-components/native";
 import LinearGradient from "react-native-linear-gradient";
@@ -15,23 +15,31 @@ import { SOCKET_URL } from "../../constants";
 import { useFocusEffect } from "@react-navigation/native";
 import { io } from "socket.io-client";
 import { setLiveMatch } from "../../store/features/live.slice";
+import { useSocket, EVENTS } from "../../context/socket";
+import { RecentOvers } from "./RecentOvers";
 
 export const LiveMatch: FC<{ matchId: string }> = ({ matchId }) => {
-    const { liveMatch } = useAppSelector(state => state.live);
-    const dispatch = useAppDispatch();
-    console.log("resssss....123");
-    useFocusEffect(React.useCallback(() => {
-        const socket = io(SOCKET_URL);
-        dispatch(setLiveMatch(undefined));
-        socket.on("ballByballDataScore", (res: any) => {
-            console.log("resssss....",res);
-            dispatch(setLiveMatch(res));
-        })
-        socket.emit("ballByballData", { "match_id": `${matchId}` })
-        return () => socket.disconnect();
-    }, [matchId, dispatch]))
+    const socket = useSocket();
+    const [match, setMatch] = useState<any>();
 
-    if (!liveMatch) return (
+    const handleGetLiveMatches = useCallback((data: any) => {
+        setMatch(data?.result)
+    }, [setMatch])
+
+    useEffect(() => {
+        socket.emit(EVENTS.GET_LIVE_SCORE_API, JSON.stringify({
+            matchId
+        }));
+
+        socket.on(EVENTS.GET_LIVE_SCORE_API_EMIT, handleGetLiveMatches);
+
+        return () => {
+            console.log("soket off for", matchId);
+            socket.off(EVENTS.GET_LIVE_SCORE_API_EMIT, handleGetLiveMatches);
+        }
+    }, [socket, matchId, handleGetLiveMatches])
+
+    if (!match) return (
         <Container style={{
             flex: 1,
             justifyContent: "center"
@@ -46,38 +54,38 @@ export const LiveMatch: FC<{ matchId: string }> = ({ matchId }) => {
                     <Body>
                         <TeamScoreContainer>
                             <ScoreContainer>
-                                <Score>{liveMatch?.team_a_scores}</Score>
-                                <Over>{liveMatch?.team_a_over} OVER</Over>
+                                <Score>{match?.team_a_scores}</Score>
+                                <Over>{match?.team_a_over} OVER</Over>
                             </ScoreContainer>
                             <TeamContainer>
                                 <TeamNameContainer colors={['#5f026e', '#43045e', '#5f026e']}>
-                                    <TeamName>{liveMatch?.team_a_short}</TeamName>
+                                    <TeamName>{match?.team_a_short}</TeamName>
                                     <VsContainer>
                                         <VsText>VS</VsText>
                                     </VsContainer>
-                                    <TeamName>{liveMatch?.team_b_short}</TeamName>
+                                    <TeamName>{match?.team_b_short}</TeamName>
                                 </TeamNameContainer>
-                                <Logo source={{ uri: liveMatch?.team_a_img }} style={{ left: -2.5 }} />
-                                <Logo source={{ uri: liveMatch?.team_b_img }} style={{ right: -2.5 }} />
+                                <Logo source={{ uri: match?.team_a_img }} style={{ left: -2.5 }} />
+                                <Logo source={{ uri: match?.team_b_img }} style={{ right: -2.5 }} />
                             </TeamContainer>
                             <ScoreContainer>
-                                <Score>{liveMatch?.team_b_scores}</Score>
-                                <Over>{liveMatch?.team_b_over} OVER</Over>
+                                <Score>{match?.team_b_scores}</Score>
+                                <Over>{match?.team_b_over} OVER</Over>
                             </ScoreContainer>
                         </TeamScoreContainer>
                     </Body>
                     <View style={{ flex: 1 }}></View>
                     <RunRateContainer>
-                        <RunRateText>CRR:{liveMatch?.curr_rate}</RunRateText>
-                        <RunRateText>RR:{liveMatch?.rr_rate}</RunRateText>
+                        <RunRateText>CRR: {match?.curr_rate}</RunRateText>
+                        <RunRateText>RR: {match?.rr_rate}</RunRateText>
                     </RunRateContainer>
                 </Card>
                 <Exchnage />
                 <Session />
                 <Whatsapp />
-                {/* <RecentOvers last36ball={liveMatch?.last36ball || []} /> */}
-                <CurrentPartnership partnership={liveMatch?.partnership} />
-                <CurrentScoreCard batsman={liveMatch?.batsman} bolwer={liveMatch?.bolwer} />
+                <RecentOvers last36ball={match?.last36ball || []} />
+                <CurrentPartnership partnership={match?.partnership} />
+                <CurrentScoreCard batsman={match?.batsman} bolwer={match?.bolwer} />
             </ScrollView>
         </Container>
     )
