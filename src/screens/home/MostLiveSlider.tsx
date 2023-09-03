@@ -1,32 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components/native";
 import Swiper from 'react-native-swiper';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import MostLive from "../../components/cards/MostLive";
-import { getLiveMatches, Match } from '../../config/axios';
-
+import { Match } from "../../config/axios";
+import { useSocket, EVENTS } from "../../context/socket";
 
 const MostLiveSlider = () => {
-    const [loading, setLoading] = useState(true);
+    const socket = useSocket();
     const [matches, setMatches] = useState<Array<Match>>([]);
 
+    const handleGetLiveMatches = useCallback(({ result = [] }: { result: Array<Match> }) => {
+        setMatches(result);
+    }, [setMatches])
 
-    const getMatche = async () => {
-        try {
-            const { data } = await getLiveMatches("", 1, 3);
-            if (!data?.error) {
-                setMatches(data.data.result)
-            }
-        } finally {
-            setLoading(false);
-        }
-    }
 
     useEffect(() => {
-        getMatche();
-    }, [])
+        socket.emit(EVENTS.GET_LIVE_MATCH_LIST, JSON.stringify({
+            matchType: ""
+        }));
 
-    if (loading || matches?.length === 0) return null;
+        socket.on(EVENTS.GET_LIVE_MATCH_LIST_EMIT, handleGetLiveMatches);
+
+        return () => {
+            socket.off(EVENTS.GET_LIVE_MATCH_LIST_EMIT, handleGetLiveMatches);
+        }
+    }, [socket, handleGetLiveMatches])
+
+    if (matches?.length === 0) return null;
+
     return (
         <Slider
             paginationStyle={{
