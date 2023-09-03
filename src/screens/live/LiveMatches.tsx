@@ -1,49 +1,50 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { FlatList, RefreshControl } from "react-native";
-import io from "socket.io-client";
+import { FlatList } from "react-native";
 import styled from "styled-components/native";
 import { ItemSeprator } from "../../ui";
 import { NoMatchs } from "../recent/NoMatchs";
-import { useFocusEffect } from "@react-navigation/native";
 import LinearGradient from 'react-native-linear-gradient';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { LeftMatchTitle } from "../../components/MatchTitle";
 import { MatchType } from "../../components/MatchType";
 import { T20 } from "../../components/T20";
 import { MatchPoint } from "../../components/MatchPoint";
-import { Match, getLiveMatches } from "../../config/axios";
-import { Loading } from "../../components/Loading";
-const SOCKET_URL = "http://52.66.245.248:3001";
+import { Match } from "../../config/axios";
+import { useSocket, EVENTS } from "../../context/socket";
+
 
 export const LiveMatches = ({ navigation }: any) => {
-    const [refreshing, setRefreshing] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const socket = useSocket();
     const [matches, setMatches] = useState<Array<Match>>([]);
 
+    const handleGetLiveMatches = useCallback(({ result = [] }: { result: Array<Match> }) => {
+        setMatches(result);
+    }, [setMatches])
 
-    const getMatche = async () => {
-        try {
-            const { data } = await getLiveMatches("", 1, 3);
-            if (!data?.error) {
-                setMatches(data.data.result)
-            }
-        } finally {
-            setRefreshing(false);
-            setLoading(false);
-        }
-    }
+    // useEffect(() => {
+    //     console.log("SOCKET CALLED")
+    //     socket.emit(EVENTS.GET_LIVE_SCORE_API, JSON.stringify({
+    //         matchId: 3441
+    //     }));
 
-    const onRefresh = useCallback(async () => {
-        setRefreshing(true);
-        getMatche();
-    }, [refreshing]);
+    //     socket.on(EVENTS.GET_LIVE_SCORE_API_EMIT, handleGetLiveMatches);
+
+    //     return () => {
+    //         socket.off(EVENTS.GET_LIVE_SCORE_API_EMIT, handleGetLiveMatches);
+    //     }
+    // }, [socket, handleGetLiveMatches])
 
     useEffect(() => {
-        getMatche();
-    }, [])
+        socket.emit(EVENTS.GET_LIVE_MATCH_LIST, JSON.stringify({
+            matchType: ""
+        }));
 
-    console.log({ matches });
+        socket.on(EVENTS.GET_LIVE_MATCH_LIST_EMIT, handleGetLiveMatches);
 
+        return () => {
+            socket.off(EVENTS.GET_LIVE_MATCH_LIST_EMIT, handleGetLiveMatches);
+        }
+    }, [socket, handleGetLiveMatches])
 
     const renderItem = ({ item: match }: { item: Match }) => (
         <Card activeOpacity={1} onPress={() => navigation.navigate("LiveStack_Live", {
@@ -86,7 +87,6 @@ export const LiveMatches = ({ navigation }: any) => {
         </Card>
     )
 
-    if (loading && matches.length === 0) return <Loading />;
     return (
         <Container>
             <FlatList
@@ -96,9 +96,6 @@ export const LiveMatches = ({ navigation }: any) => {
                 ItemSeparatorComponent={ItemSeprator}
                 ListEmptyComponent={NoMatchs}
                 keyExtractor={(item) => item.match_id.toString()}
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                }
             />
         </Container>
     )
