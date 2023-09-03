@@ -3,18 +3,12 @@ import React, { FC, useCallback, useEffect, useState } from "react";
 import { Container, GradientContainer } from "../../styles";
 import { CurrentScoreCard } from "./CurrentScoreCard";
 import { CurrentPartnership } from "./CurrentPartnership";
-// import { RecentOvers } from "./RecentOvers";
 import { Whatsapp } from "./Whatsapp";
 import { Session } from "./Session";
 import { Exchnage } from "./Exchange";
 import { ActivityIndicator, Alert, ScrollView, View } from "react-native";
-import { useAppDispatch, useAppSelector } from "../../store";
 import styled from "styled-components/native";
 import LinearGradient from "react-native-linear-gradient";
-import { SOCKET_URL } from "../../constants";
-import { useFocusEffect } from "@react-navigation/native";
-import { io } from "socket.io-client";
-import { setLiveMatch } from "../../store/features/live.slice";
 import { useSocket, EVENTS } from "../../context/socket";
 import { RecentOvers } from "./RecentOvers";
 
