@@ -4,9 +4,9 @@ import { View } from "react-native";
 import chunk from "lodash/chunk";
 import { GradientContainer } from "../../styles";
 import { AccordianButton } from "../../components/AccordianButton";
-import { TeamSqad } from "../../config/axios";
+import { Squad } from "./MatchInfo";
 
-export const PlayerList: FC<{ squad: TeamSqad }> = ({ squad }) => {
+export const PlayerList: FC<{ squad: Squad }> = ({ squad }) => {
     const [show, setShow] = useState(true);
     return (
         <Fragment>
@@ -27,7 +27,7 @@ export const PlayerList: FC<{ squad: TeamSqad }> = ({ squad }) => {
                             justifyContent: "center",
                             alignItems: "center"
                         }}>
-                            <Logo source={{ uri: player.image }} />
+                            <Logo source={{uri: player.image}} />
                             <Name numberOfLines={2}>{player.name}</Name>
                             <Role>{player.play_role}</Role>
                         </View>)}
@@ -64,5 +64,4 @@ const Logo = styled.Image`
     border-color: #f0f0f0e2;
     border-width: 4px;
     margin-bottom: 2px;
-    object-fit: contain;
 `;

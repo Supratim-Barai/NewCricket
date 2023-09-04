@@ -3,6 +3,7 @@ import styled from "styled-components/native";
 import { Card } from "../../ui";
 import { Match } from "../../config/axios";
 import { TouchableOpacityProps } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 interface RecentMatchCardProps extends TouchableOpacityProps {
     match: Match;
@@ -10,6 +11,7 @@ interface RecentMatchCardProps extends TouchableOpacityProps {
 }
 
 const RecentMatchCard: FC<RecentMatchCardProps> = ({ match, isAll = false, ...rest }) => {
+    const navigation: any = useNavigation();
     return (
         <Card {...rest}>
             <Header>
@@ -52,10 +54,10 @@ const RecentMatchCard: FC<RecentMatchCardProps> = ({ match, isAll = false, ...re
                     </Player>
                     <Row>
                         <Button
-                        // onPress={() => navigation.navigate("RecentStack_RecentTabs", {
-                        //     match_id: match.match_id,
-                        //     screen: "Live_ScoreCard"
-                        // })}
+                        onPress={() => navigation.navigate("RecentStack_RecentTabs", {
+                            match_id: match.match_id,
+                            screen: "Live_ScoreCard"
+                        })}
                         >
                             <ButtonText>SCORE CARD</ButtonText>
                         </Button>

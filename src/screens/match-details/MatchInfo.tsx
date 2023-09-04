@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import { ScrollView } from "react-native";
 import { Container, GradientContainer } from "../../styles";
 import { PlayerList } from "./PlayerList";
@@ -7,9 +7,11 @@ import { TeamForm } from "./TeamForm";
 import { VenueScoringPattern } from "./VenueScoringPattern";
 import { VenueDetails } from "./VenueDetails";
 import { InningDetails } from "./InningDetails";
+import { useFocusEffect } from "@react-navigation/native";
+import { io } from "socket.io-client";
+import { SOCKET_URL } from "../../constants";
 import styled from "styled-components/native";
 import LinearGradient from "react-native-linear-gradient";
-import { getMatchInfo, MatchInfo as MatchInfoData, getMatchSquad, Sqad } from "../../config/axios";
 
 interface MatchInfo {
     match_date: string;
@@ -49,18 +51,17 @@ interface Squads {
 }
 
 export const MatchInfo: FC<{ matchId: string }> = ({ matchId }) => {
-    const [info, setInfo] = useState<MatchInfoData>();
-    const [squads, setSquads] = useState<Sqad>();
-
-    useEffect(() => {
-        getMatchInfo(matchId).then(({ data }) => {
-            setInfo(data?.data?.result)
-        })
-        getMatchSquad(matchId).then(({ data }) => {
-            console.log("getMatchSquad", data?.data?.result?.team_a)
-            setSquads(data?.data?.result);
-        })
-    }, [matchId, setInfo, setSquads])
+    const [info, setInfo] = useState<MatchInfo | undefined>(undefined);
+    const [squads, setSquads] = useState<Squads>({} as Squads);
+    
+    useFocusEffect(React.useCallback(() => {
+        const socket = io(SOCKET_URL);
+        socket.on("pullInfo", setInfo);
+        socket.on("pullSquads", setSquads);
+        socket.emit("getInfo", { "match_id": `${matchId}` });
+        socket.emit("getSquads", { "match_id": `${matchId}` });
+        return () => socket.disconnect();
+    }, [matchId]))
 
     if (!info) return null;
     return (
@@ -80,8 +81,7 @@ export const MatchInfo: FC<{ matchId: string }> = ({ matchId }) => {
                     </TeamContainer>
                     <Caption>{info.toss}</Caption>
                 </MatchStatus>
-                {squads?.team_a ? <PlayerList squad={squads.team_a} /> : null}
-                {squads?.team_b ? <PlayerList squad={squads.team_b} /> : null}
+                {Object.values(squads).map((squad: Squad) => <PlayerList key={squad.short_name} squad={squad} />)}
                 <VenueDetails />
                 <InningDetails />
                 <TeamForm />

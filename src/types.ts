@@ -23,6 +23,7 @@ export type MainStackParamList = {
   TermsOfUs: undefined;
   PrivacyPolicy: undefined;
   FollowUs: undefined;
+  MatchDetails: undefined;
 };
 export type HomeStackParamList = {
   Home: undefined;

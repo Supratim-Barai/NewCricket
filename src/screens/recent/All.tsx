@@ -17,6 +17,10 @@ const All = () => {
         return (
             <RecentMatchCard
                 onPress={() => {
+                    // navigation.navigate("MatchDetails", {
+                    //     match_id: item.match_id,
+                    //     name: `${item.team_a_short} vs ${item.team_b_short}`
+                    // })
                     navigation.navigate("RecentStack_RecentTabs", {
                         match_id: item.match_id,
                         screen: "Live_MatchInfo"

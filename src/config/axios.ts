@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import axios from 'axios';
-import {BASE_URL, X_ACCESS_TOKEN} from '../constants';
+import { BASE_URL, X_ACCESS_TOKEN } from '../constants';
 
 let APIKit = axios.create({
   baseURL: BASE_URL,
@@ -186,7 +186,7 @@ interface CommentryDataResponse {
 }
 
 export const getCommentries = (matchId: string) => {
-  const data = JSON.stringify({matchId});
+  const data = JSON.stringify({ matchId });
   console.log('match/commentary', data);
   return APIKit.request<CommentryDataResponse>({
     method: 'POST',
@@ -255,7 +255,7 @@ interface ScoreCardDataResponse {
 }
 
 export const getScoreCard = (matchId: string) => {
-  const data = JSON.stringify({matchId});
+  const data = JSON.stringify({ matchId });
   console.log('match/scoreCard', data);
   return APIKit.request<ScoreCardDataResponse>({
     method: 'POST',
@@ -285,7 +285,7 @@ interface PointsTableDataResponse {
 }
 
 export const getPointTable = (seriesId: string) => {
-  const data = JSON.stringify({seriesId});
+  const data = JSON.stringify({ seriesId });
   console.log('match/pointTable', data);
   return APIKit.request<PointsTableDataResponse>({
     method: 'POST',
@@ -300,7 +300,7 @@ export interface OddsHistory {
   name: string;
   short_name: string;
   flag: string;
-  player:Array<Player>;
+  player: Array<Player>;
 }
 interface OddsHistoryDataResponse {
   error: boolean;
@@ -312,7 +312,7 @@ interface OddsHistoryDataResponse {
   };
 }
 export const getOddsHistory = (matchId: string) => {
-  const data = JSON.stringify({matchId});
+  const data = JSON.stringify({ matchId });
   console.log('match/oddsHistory', data);
   return APIKit.request<OddsHistoryDataResponse>({
     method: 'POST',
@@ -335,18 +335,21 @@ export interface TeamSqad {
   flag: string;
   player: Array<Player>;
 }
+
+export interface Sqad {
+  team_a: TeamSqad;
+  team_b: TeamSqad;
+}
 interface MatchSquadDataResponse {
   error: boolean;
   message: string;
   data: {
-    result: {
-      [key: string]: TeamSqad;
-    };
+    result: Sqad;
   };
 }
 
 export const getMatchSquad = (matchId: string) => {
-  const data = JSON.stringify({matchId});
+  const data = JSON.stringify({ matchId });
   console.log('match/matchSquad', data);
   return APIKit.request<MatchSquadDataResponse>({
     method: 'POST',
@@ -354,3 +357,58 @@ export const getMatchSquad = (matchId: string) => {
     data,
   });
 };
+
+
+export const getMatchDetails = (matchId: string) => {
+  const data = JSON.stringify({ matchId });
+  console.log('match/matchDetails', data);
+  return APIKit.request({
+    method: 'POST',
+    url: '/match/matchDetails',
+    data
+  });
+}
+
+export interface MatchInfo {
+  "man_of_match": string;
+  "man_of_match_player": string;
+  "match_date": string;
+  "match_status": string;
+  "match_time": string;
+  "match_type": string;
+  "matchs": string;
+  "referee": string;
+  "result": string;
+  "series": string;
+  "series_id": number;
+  "team_a": string;
+  "team_a_id": number;
+  "team_a_img": string;
+  "team_a_short": string;
+  "team_b": string;
+  "team_b_id": number;
+  "team_b_img": string;
+  "team_b_short": string;
+  "third_umpire": string;
+  "toss": string;
+  "tv_id": number;
+  "umpire": string;
+  "venue": string;
+}
+interface MatchInfoResponse {
+  error: boolean;
+  message: string;
+  data: {
+    result: MatchInfo
+  };
+}
+
+export const getMatchInfo = (matchId: string) => {
+  const data = JSON.stringify({ matchId });
+  console.log('match/matchInfo', data);
+  return APIKit.request<MatchInfoResponse>({
+    method: 'POST',
+    url: '/match/matchInfo',
+    data
+  });
+}
