@@ -13,8 +13,8 @@ export const Circle: FC<TextProps> = (props) => (
 )
 
 const Container = styled.View`
-    width: ${wp(5.6)}px;
-    height: ${wp(5.6)}px;
+    width: ${wp(6)}px;
+    height: ${wp(6)}px;
     background-color: #fff;
     border-radius: ${wp(3)}px;
     justify-content: center;
@@ -23,7 +23,7 @@ const Container = styled.View`
 
 const CircleText = styled.Text`
     color: #5f026e;
-    font-size: ${hp(1.75)}px;
+    font-size: ${hp(1.5)}px;
     font-family: 'Roboto-Bold';
     text-align: center;
 `;

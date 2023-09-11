@@ -1,11 +1,11 @@
 import React, { FC, Fragment } from "react";
 import styled from "styled-components/native";
 import { GradientContainer, Row, Col, Divider, SmallText as TableText, SmallHeadingText as TableHeaderText } from "../../styles";
-import { Batsman, Bolwer } from "../../types";
+import { Batsman, Bowler } from "../../config/axios";
 
 export const CurrentScoreCard: FC<{
     batsman: Array<Batsman> | undefined;
-    bolwer: Bolwer | undefined;
+    bolwer: Bowler | undefined;
 }> = ({ batsman, bolwer }) => (
     <Container>
         {Boolean(batsman) && <Content>

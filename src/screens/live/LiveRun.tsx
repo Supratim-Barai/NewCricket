@@ -2,11 +2,11 @@ import React, { FC } from "react";
 import styled from "styled-components/native";
 import LinearGradient from "react-native-linear-gradient";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
-import { Batsman, Bolwer } from "../../types";
+import { Batsman, Bowler } from "../../config/axios";
 
 export const LiveRun: FC<{
     batsman: Array<Batsman> | undefined;
-    bolwer: Bolwer | undefined;
+    bolwer: Bowler | undefined;
 }> = ({ batsman, bolwer }) => (
     <GradientContainer colors={['#33014a', '#07000a']}>
         <Col flex={33}>

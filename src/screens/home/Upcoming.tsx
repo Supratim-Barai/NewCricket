@@ -51,9 +51,9 @@ export const Upcoming: FC<UpcomingProps> = ({ match }) => {
                             <Over>00.0 OVER</Over>
                         </ScoreContainer>
                     </TeamScoreContainer>
-                    <LeftEspectedScore over={20} score={`${match.teamAscore1}-${match.teamAscore2}`} />
-                    <MatchPoint leftValue={match?.teamRate1} title={match.fav_team} rightValue={match?.teamRate2} />
-                    <RightEspectedScore over={20} score={`${match.teamBscore1}-${match.teamBscore2}`} />
+                    {/* <LeftEspectedScore over={20} score={`${match.team_a_scores}-${match.teamAscore2}`} /> */}
+                    {/* <MatchPoint leftValue={match?.teamRate1} title={match.fav_team} rightValue={match?.teamRate2} /> */}
+                    {/* <RightEspectedScore over={20} score={`${match.team_b_scores}-${match.team_a_score}`} /> */}
                 </Body>
             </GradientContainer>
         </Container>

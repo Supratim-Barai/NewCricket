@@ -29,8 +29,8 @@ export const Commentries: FC<CommentriesProps> = ({ comentries }) => {
                     {Object.values(inning2).map((commentries) => commentries.map(commentry => (
                         <Fragment>
                             <Row>
-                                <Circle>{commentry?.data?.over ?? commentry?.data?.overs?.[0]}</Circle>
-                                <Over>{commentry?.data?.over ?? commentry?.data?.overs}</Over>
+                                <Circle>{commentry?.data?.overs?.split(".")?.[0]}</Circle>
+                                <Over>{commentry?.data?.overs}</Over>
                                 <Comment>{commentry?.data?.title}</Comment>
                             </Row>
                             <Divider />
@@ -40,8 +40,8 @@ export const Commentries: FC<CommentriesProps> = ({ comentries }) => {
                     {Object.values(inning1).map((commentries) => commentries.map(commentry => (
                         <Fragment>
                             <Row>
-                                <Circle>{commentry?.data?.over ?? commentry?.data?.overs?.[0]}</Circle>
-                                <Over>{commentry?.data?.over ?? commentry?.data?.overs}</Over>
+                                <Circle>{commentry?.data?.overs?.split(".")?.[0]}</Circle>
+                                <Over>{commentry?.data?.overs}</Over>
                                 <Comment>{commentry?.data?.title}</Comment>
                             </Row>
                             <Divider />
@@ -77,11 +77,11 @@ const Row = styled.View`
 `;
 
 const Over = styled.Text`
-    color: #fff;
-    font-size: ${wp(4.5)}px;
+    font-size: ${wp(4)}px;
     font-family: 'Roboto-Bold';
     text-align: center;
     margin: 0 10px;
+    color: #cb28e5;
 `;
 
 const Comment = styled.Text`

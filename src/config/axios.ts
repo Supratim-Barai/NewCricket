@@ -412,3 +412,77 @@ export const getMatchInfo = (matchId: string) => {
     data
   });
 }
+
+export interface MatchLiveInfoResult {
+  "ball_rem": number;
+  "balling_team": string;
+  "batsman": Array<Batsman>;
+  "batting_team": string;
+  "bolwer": Bowler;
+  "c_team_score": number;
+  "curr_rate": string;
+  "current_inning": string;
+  "fav_team": string;
+  "first_circle": string;
+  "last36ball": Array<string>;
+  // "last4overs": [Array],
+  "lastwicket": [Object],
+  "match_id": number;
+  "match_over": string;
+  "match_type": string;
+  "max_rate": number;
+  "min_rate": number;
+  "next_batsman": string;
+  // "partnership": [Object],
+  "powerplay": string;
+  "result": string;
+  "rr_rate": string;
+  "run_need": number;
+  "s_ball": number;
+  "s_max": string;
+  "s_min": string;
+  "s_ovr": string;
+  "s_run": number;
+  "second_circle": string;
+  "series_id": number;
+  "session": string;
+  "target": number;
+  "team_a": string;
+  "team_a_id": number;
+  "team_a_img": string;
+  "team_a_over": string;
+  "team_a_score": [Object];
+  "team_a_scores": string;
+  // "team_a_scores_over": [Array],
+  "team_a_short": string;
+  "team_b": string;
+  "team_b_id": number;
+  "team_b_img": string;
+  "team_b_over": string;
+  "team_b_score": [Object];
+  "team_b_scores": string;
+  // "team_b_scores_over": [Array];
+  "team_b_short": string;
+  "toss": "Pakistan have won the toss and have opted to field",
+  "tv_id": number;
+  // "yet_to_bet": [Array]
+}
+
+interface MatchLiveInfoResponse {
+  data: {
+    result: MatchLiveInfoResult;
+  },
+  "error": boolean;
+  "message": string;
+}
+
+
+export const getMatchLiveInfo = (matchId: string) => {
+  const data = JSON.stringify({ matchId });
+  console.log('match/matchLiveInfo', data);
+  return APIKit.request<MatchLiveInfoResponse>({
+    method: 'POST',
+    url: '/match/matchLiveInfo',
+    data
+  });
+}
