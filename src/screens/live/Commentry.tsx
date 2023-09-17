@@ -8,6 +8,7 @@ import { getCommentries, CommentryData, getMatchLiveInfo, MatchLiveInfoResult } 
 import LinearGradient from "react-native-linear-gradient";
 import { GradientContainer } from "../../styles";
 import { Text, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 export const Commentry: FC<{ matchId: string }> = ({ matchId }) => {
     const [match, setMatch] = useState<MatchLiveInfoResult>();
@@ -67,11 +68,11 @@ export const Commentry: FC<{ matchId: string }> = ({ matchId }) => {
                             <View style={{
                                 position: "absolute",
                                 bottom: -30,
-                                width:"60%",
-                                marginLeft:"18%",
-                                alignItems:"center"
+                                width: "60%",
+                                marginLeft: "18%",
+                                alignItems: "center"
                             }}>
-                                <Text style={{ color: "#fff", fontSize: 10, textAlign:"center" }}>{match?.toss}</Text>
+                                <Text style={{ color: "#fff", fontSize: 10, textAlign: "center" }}>{match?.toss}</Text>
                             </View>
                         </TeamContainer>
                         <ScoreContainer>
@@ -85,10 +86,12 @@ export const Commentry: FC<{ matchId: string }> = ({ matchId }) => {
                     <RunRateText>RR: {match?.rr_rate}</RunRateText>
                 </RunRateContainer>
             </Card>}
-            {Boolean(match) && <CurrentScoreCard batsman={match?.batsman} bolwer={match?.bolwer} />}
-            {Boolean(match) && <LiveRun batsman={match?.batsman} bolwer={match?.bolwer} />}
-            {Boolean(match) && <RecentOvers last36ball={match?.last36ball || []} />}
-            <Commentries comentries={comentries} />
+            <ScrollView>
+                {Boolean(match) && <CurrentScoreCard batsman={match?.batsman} bolwer={match?.bolwer} />}
+                {Boolean(match) && <LiveRun batsman={match?.batsman} bolwer={match?.bolwer} />}
+                {Boolean(match) && <RecentOvers last36ball={match?.last36ball || []} />}
+                <Commentries comentries={comentries} />
+            </ScrollView>
         </Container>
     )
 }

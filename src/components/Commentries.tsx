@@ -1,4 +1,4 @@
-import React, { FC, Fragment } from "react";
+import React, { FC, Fragment, useState } from "react";
 import styled from "styled-components/native";
 import LinearGradient from "react-native-linear-gradient";
 import {
@@ -7,7 +7,8 @@ import {
 } from "react-native-responsive-screen";
 import { Circle } from "./Circle";
 import { CommentryData } from "../config/axios";
-import { ScrollView } from "react-native";
+import { ScrollView, View } from "react-native";
+import { Button } from "react-native-elements";
 
 interface CommentriesProps {
     comentries: {
@@ -17,38 +18,38 @@ interface CommentriesProps {
 
 export const Commentries: FC<CommentriesProps> = ({ comentries }) => {
     const inning2 = comentries?.["2 Inning"] ?? {}, inning1 = comentries?.["1 Inning"] ?? {};
-    const inning1Arr = Object.values(inning1), inning2Arr = Object.values(inning2);
+    const [activeInnings, setActiveInnings] = useState<string | undefined>("1 Inning")
+    const inningKeys = comentries ? Object.keys(comentries) : [];
     return (
         <Container>
             <GradientContainer colors={['#33014a', '#07000a']}>
                 <Heading>
                     <HeadingText>COMMENTRY</HeadingText>
                 </Heading>
-                <ScrollView>
-                    {inning2Arr?.length > 0 ? <Title>Commentries of Inning 2</Title> : null}
-                    {Object.values(inning2).map((commentries) => commentries.map(commentry => (
-                        <Fragment>
-                            <Row>
-                                <Circle>{commentry?.data?.overs?.split(".")?.[0]}</Circle>
-                                <Over>{commentry?.data?.overs}</Over>
-                                <Comment>{commentry?.data?.title}</Comment>
-                            </Row>
-                            <Divider />
-                        </Fragment>
-                    )))}
-                    {inning1Arr?.length > 0 ? <Title>Commentries of Inning 1</Title> : null}
-                    {Object.values(inning1).map((commentries) => commentries.map(commentry => (
-                        <Fragment>
-                            <Row>
-                                <Circle>{commentry?.data?.overs?.split(".")?.[0]}</Circle>
-                                <Over>{commentry?.data?.overs}</Over>
-                                <Comment>{commentry?.data?.title}</Comment>
-                            </Row>
-                            <Divider />
-                        </Fragment>
-                    )))}
-                    <Height />
-                </ScrollView>
+                <View style={{ flexDirection: "row", paddingHorizontal: 15, marginBottom: 15 }}>
+                    {inningKeys.map(inning => <Button key={inning} title={inning} buttonStyle={{ marginRight: 10, minWidth: 100, borderRadius: 20, backgroundColor: inning == activeInnings ? "#5f026e" : 'transparent' }} onPress={() => setActiveInnings(inning)} />)}
+                </View>
+                {activeInnings === "2 Inning" ? Object.values(inning2).map((commentries) => commentries.map(commentry => (
+                    <Fragment>
+                        <Row>
+                            <Circle>{commentry?.data?.overs?.split(".")?.[0]}</Circle>
+                            <Over>{commentry?.data?.overs}</Over>
+                            <Comment>{commentry?.data?.title}</Comment>
+                        </Row>
+                        <Divider />
+                    </Fragment>
+                ))) : null}
+                {activeInnings === "1 Inning" ? Object.values(inning1).map((commentries) => commentries.map(commentry => (
+                    <Fragment>
+                        <Row>
+                            <Circle>{commentry?.data?.overs?.split(".")?.[0]}</Circle>
+                            <Over>{commentry?.data?.overs}</Over>
+                            <Comment>{commentry?.data?.title}</Comment>
+                        </Row>
+                        <Divider />
+                    </Fragment>
+                ))) : null}
+                <Height />
             </GradientContainer>
         </Container>
     )
