@@ -36,28 +36,28 @@ const BallByBall: FC<{ ball: string }> = ({ ball }) => {
 
         case "4":
             return (
-                <Circle bgColor="green">
+                <Circle bgColor="#b8c231">
                     <CircleText>4</CircleText>
                 </Circle>
             )
 
         case "6":
             return (
-                <Circle bgColor="yellow">
+                <Circle bgColor="#de8648">
                     <CircleText>6</CircleText>
                 </Circle>
             )
 
         case "W":
             return (
-                <Circle bgColor="red">
+                <Circle bgColor="#f8342f">
                     <CircleText>W</CircleText>
                 </Circle>
             )
 
         case "Wb":
             return (
-                <Circle>
+                <Circle bgColor="#fff">
                     <CircleText>WD</CircleText>
                 </Circle>
             )
