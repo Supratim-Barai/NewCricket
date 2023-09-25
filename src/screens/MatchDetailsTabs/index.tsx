@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { PointsTable } from "./components/PointsTable";
 import { MyEntry } from "./components/MyEntry";
 import { ScoreCard } from "./components/ScoreCard";
@@ -9,12 +9,32 @@ import { LiveMatch } from "./components/LiveMatch";
 import { MatchInfo } from "./components/MatchInfo";
 import { OddHistory } from "./components/OddHistory";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { getMatchInfo, MatchInfo as MatchInfoData } from "../../config/axios";
+import { ActivityIndicator, View } from "react-native";
 
 const Tab = createMaterialTopTabNavigator();
 
 const MatchDetailsTabs = (props: any) => {
     const matchId = props?.route?.params?.match_id;
-    const seriesId = props?.route?.params?.series_id;
+    const [info, setInfo] = useState<MatchInfoData>();
+    const [loading, setLoading] = useState<boolean>(true);
+
+    useEffect(() => {
+        getMatchInfo(matchId).then(({ data }) => {
+            setInfo(data?.data?.result)
+        }).finally(() => {
+            setLoading(false);
+        })
+    }, [matchId, setInfo, setLoading])
+
+    if (loading) return <View style={{
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 8
+    }}>
+        <ActivityIndicator />
+    </View>
+    console.log(info)
     return (
         <Tab.Navigator
             initialRouteName="Live_LiveMatch"
@@ -43,27 +63,42 @@ const MatchDetailsTabs = (props: any) => {
                 }
             })}
         >
-            {/* <Tab.Screen name="Live_LiveMatch" component={LiveMatch} /> */}
-            <Tab.Screen name="Live_LiveMatch">
+            <Tab.Screen name="Live_LiveMatch" options={{
+                lazy: true
+            }}>
                 {(props) => <LiveMatch  {...props} matchId={matchId} />}
             </Tab.Screen>
-            <Tab.Screen name="Live_MatchInfo">
+            <Tab.Screen name="Live_MatchInfo" options={{
+                lazy: true
+            }}>
                 {(props) => <MatchInfo  {...props} matchId={matchId} />}
             </Tab.Screen>
-            <Tab.Screen name="Live_ScoreCard">
+            <Tab.Screen name="Live_ScoreCard" options={{
+                lazy: true
+            }}>
                 {(props) => <ScoreCard  {...props} matchId={matchId} />}
             </Tab.Screen>
-            <Tab.Screen name="Live_PointTable">
-                {(props) => <PointsTable  {...props} seriesId={seriesId} />}
+            <Tab.Screen name="Live_PointTable" options={{
+                lazy: true
+            }}>
+                {(props) => <PointsTable  {...props} seriesId={`${info?.series_id}`} />}
             </Tab.Screen>
-            <Tab.Screen name="Live_OddHistory">
-                {(props) => <OddHistory  {...props} seriesId={seriesId} />}
+            <Tab.Screen name="Live_OddHistory" options={{
+                lazy: true
+            }}>
+                {(props) => <OddHistory  {...props} seriesId={`${info?.series_id}`} />}
             </Tab.Screen>
-            <Tab.Screen name="Live_Commentry">
+            <Tab.Screen name="Live_Commentry" options={{
+                lazy: true
+            }}>
                 {(props) => <Commentry  {...props} matchId={matchId} />}
             </Tab.Screen>
-            <Tab.Screen name="Live_BallByBall" component={BallByBall} />
-            <Tab.Screen name="Live_MyEntry" component={MyEntry} />
+            <Tab.Screen name="Live_BallByBall" component={BallByBall} options={{
+                lazy: true
+            }} />
+            <Tab.Screen name="Live_MyEntry" component={MyEntry} options={{
+                lazy: true
+            }} />
         </Tab.Navigator>
     );
 }
