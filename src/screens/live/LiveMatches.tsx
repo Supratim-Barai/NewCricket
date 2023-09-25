@@ -47,11 +47,11 @@ export const LiveMatches = ({ navigation }: any) => {
     }, [socket, handleGetLiveMatches])
 
     const renderItem = ({ item: match }: { item: Match }) => (
-        <Card activeOpacity={1} onPress={() => navigation.navigate("LiveStack_Live", {
+        <Card activeOpacity={1} onPress={() => navigation.navigate("MatchDetails", {
             match_id: match.match_id,
-            screen: "Live_LiveMatch",
-            series_id: match.series_id
-        })}>
+            screen: "Live_MatchInfo"
+        })}
+        >
             <GradientContainer colors={['#33014a', '#07000a']}>
                 <Header>
                     <LeftMatchTitle title={match?.series || ""} />

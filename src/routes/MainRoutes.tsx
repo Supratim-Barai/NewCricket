@@ -16,7 +16,8 @@ import { AboutUs } from "../screens/about-us";
 import { TermsOfUs } from "../screens/terms-of-us";
 import { PrivacyPolicy } from "../screens/privacy-policy";
 import { FollowUs } from "../screens/follow-us";
-import MatchDetails from "../screens/match-details";
+// import MatchDetails from "../screens/match-details";
+import MatchDetailsTabs from "../screens/MatchDetailsTabs";
 
 const MainStack = createNativeStackNavigator<MainStackParamList>();
 
@@ -165,7 +166,7 @@ const MainRoutes: FC = () => {
                 })} />
             <MainStack.Screen
                 name="MatchDetails"
-                component={MatchDetails}
+                component={MatchDetailsTabs}
                 options={({ route }: any) => ({
                     title: route.params.name,
                     headerShown: true,

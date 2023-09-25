@@ -1,38 +1,68 @@
-import React, { FC } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { FlatList } from "react-native";
 import styled from "styled-components/native";
+import { ItemSeprator } from "../../../ui";
+import { NoMatchs } from "../../recent/NoMatchs";
 import LinearGradient from 'react-native-linear-gradient';
-import { MatchType } from "../../components/MatchType";
-import { T20, } from "../../components/T20";
-import { LeftMatchTitle } from "../../components/MatchTitle";
-import { MatchPoint } from "../../components/MatchPoint";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { useNavigation } from "@react-navigation/native";
-import { Match } from "../../config/axios";
+import { LeftMatchTitle } from "../../../components/MatchTitle";
+import { MatchType } from "../../../components/MatchType";
+import { T20 } from "../../../components/T20";
+import { MatchPoint } from "../../../components/MatchPoint";
+import { Match } from "../../../config/axios";
+import { useSocket, EVENTS } from "../../../context/socket";
 
-interface LiveMatchProps {
-    match: Match
-}
 
-const MostLive: FC<LiveMatchProps> = ({ match }) => {
-    const navigation: any = useNavigation();
-    return (
-        <Container activeOpacity={1} onPress={() => {
-            navigation.navigate("MatchDetails", {
-                match_id: match.match_id,
-                screen: "Live_MatchInfo"
-            })
-        }}>
+export const LiveMatches = ({ navigation }: any) => {
+    const socket = useSocket();
+    const [matches, setMatches] = useState<Array<Match>>([]);
+
+    const handleGetLiveMatches = useCallback(({ result = [] }: { result: Array<Match> }) => {
+        setMatches(result);
+    }, [setMatches])
+
+    // useEffect(() => {
+    //     console.log("SOCKET CALLED")
+    //     socket.emit(EVENTS.GET_LIVE_SCORE_API, JSON.stringify({
+    //         matchId: 3441
+    //     }));
+
+    //     socket.on(EVENTS.GET_LIVE_SCORE_API_EMIT, handleGetLiveMatches);
+
+    //     return () => {
+    //         socket.off(EVENTS.GET_LIVE_SCORE_API_EMIT, handleGetLiveMatches);
+    //     }
+    // }, [socket, handleGetLiveMatches])
+
+    useEffect(() => {
+        socket.emit(EVENTS.GET_LIVE_MATCH_LIST, JSON.stringify({
+            matchType: ""
+        }));
+
+        socket.on(EVENTS.GET_LIVE_MATCH_LIST_EMIT, handleGetLiveMatches);
+
+        return () => {
+            socket.off(EVENTS.GET_LIVE_MATCH_LIST_EMIT, handleGetLiveMatches);
+        }
+    }, [socket, handleGetLiveMatches])
+
+    const renderItem = ({ item: match }: { item: Match }) => (
+        <Card activeOpacity={1} onPress={() => navigation.navigate("LiveStack_Live", {
+            match_id: match.match_id,
+            screen: "Live_LiveMatch",
+            series_id: match.series_id
+        })}>
             <GradientContainer colors={['#33014a', '#07000a']}>
                 <Header>
-                    <LeftMatchTitle title={match.series || ""} />
+                    <LeftMatchTitle title={match?.series || ""} />
                     <MatchType name="MOST LIVE" />
                     <T20 title={match?.match_type} />
                 </Header>
                 <Body>
                     <TeamScoreContainer>
-                        {/* <MatchUpdateText>CSK WON THE TOSS & OPTED TO BAT</MatchUpdateText> */}
+                        <MatchUpdateText>CSK WON THE TOSS & OPTED TO BAT</MatchUpdateText>
                         <ScoreContainer>
-                            <Score>{match.team_a_scores}</Score>
+                            <Score>{match?.team_a_scores}</Score>
                             <Over>{match.team_a_over} OVER</Over>
                         </ScoreContainer>
                         <TeamContainer>
@@ -41,26 +71,43 @@ const MostLive: FC<LiveMatchProps> = ({ match }) => {
                                 <VsContainer>
                                     <VsText>VS</VsText>
                                 </VsContainer>
-                                <TeamName>{match.team_b_short || ""}</TeamName>
+                                <TeamName>{match?.team_b_short || ""}</TeamName>
                             </TeamNameContainer>
-                            <Logo source={{ uri: match.team_a_img }} style={{ left: -2.5 }} />
-                            <Logo source={{ uri: match.team_b_img }} style={{ right: -2.5 }} />
+                            <Logo source={{ uri: match?.team_a_img }} style={{ left: -2.5 }} />
+                            <Logo source={{ uri: match?.team_b_img }} style={{ right: -2.5 }} />
                         </TeamContainer>
                         <ScoreContainer>
                             <Score>{match.team_b_scores}</Score>
                             <Over>{match.team_b_over} OVER</Over>
                         </ScoreContainer>
                     </TeamScoreContainer>
-                    <MatchPoint leftValue={match?.teamRate1} title={match?.fav_team || ""} rightValue={match?.teamRate2} />
+                    <MatchPoint leftValue={Number(match?.min_rate)} title={match?.fav_team || ""} rightValue={Number(match?.max_rate)} />
                 </Body>
             </GradientContainer>
+        </Card>
+    )
+
+    return (
+        <Container>
+            <FlatList
+                data={matches}
+                renderItem={renderItem}
+                ListHeaderComponent={ItemSeprator}
+                ItemSeparatorComponent={ItemSeprator}
+                ListEmptyComponent={NoMatchs}
+                keyExtractor={(item) => item.match_id.toString()}
+            />
         </Container>
     )
 }
 
-export default MostLive;
+const Container = styled.View`
+    flex: 1;
+    background-color: #3f0248;
+`;
 
-const Container = styled.TouchableOpacity`
+
+const Card = styled.TouchableOpacity`
     background-color: #5f026e;
     height: ${hp(18)}px;
     margin-horizontal: 6px;

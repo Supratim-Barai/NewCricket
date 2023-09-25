@@ -15,7 +15,15 @@ const T10 = () => {
 
     const renderItem = ({ item }: { item: Match }) => {
         return (
-            <RecentMatchCard match={item} />
+            <RecentMatchCard
+                onPress={() => {
+                    navigation.navigate("MatchDetails", {
+                        match_id: item.match_id,
+                        screen: "Live_MatchInfo"
+                    })
+                }}
+                match={item}
+            />
         )
     }
 

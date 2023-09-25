@@ -13,10 +13,19 @@ interface RecentProps {
 export const Recent: FC<RecentProps> = ({ recent }) => {
     const navigation: any = useNavigation();
     return (
-        <Card activeOpacity={1} style={{
-            marginTop: 10,
-            marginBottom: 10
-        }}>
+        <Card
+            activeOpacity={1}
+            style={{
+                marginTop: 10,
+                marginBottom: 10
+            }}
+            onPress={() => {
+                navigation.navigate("MatchDetails", {
+                    match_id: recent.match_id,
+                    screen: "Live_MatchInfo"
+                })
+            }}
+        >
             <Header>
                 <Left>
                     <Title>{recent.series}</Title>

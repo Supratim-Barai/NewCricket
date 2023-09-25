@@ -8,13 +8,20 @@ import { NoMatchs } from "./NoMatchs";
 import { Loading } from "../../components/Loading";
 import { Match } from "../../config/axios";
 import { useGetUpcomingMatches } from "../../hooks/use-get-upcoming-matches";
+import { useNavigation } from "@react-navigation/native";
 
 const Test = () => {
+    const navigation: any = useNavigation();
     const { refreshing, isReachedEnd, loading, matches, fetchMore, onRefresh } = useGetUpcomingMatches("Test")
 
     const renderItem = ({ item }: { item: Match }) => {
         return (
-            <Card>
+            <Card onPress={() => {
+                navigation.navigate("MatchDetails", {
+                    match_id: item.match_id,
+                    screen: "Live_MatchInfo"
+                })
+            }}>
                 <Header>
                     <Left>
                         <Title>{item.series}</Title>

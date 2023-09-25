@@ -8,15 +8,21 @@ import { LeftEspectedScore, RightEspectedScore } from "../../components/Espected
 import { RemainingTime } from "../../components/RemainingTime";
 import moment from "moment";
 import { Match } from "../../config/axios";
+import { useNavigation } from "@react-navigation/native";
 interface UpcomingProps {
     match: Match;
 }
 
 export const Upcoming: FC<UpcomingProps> = ({ match }) => {
     console.log(moment())
-
+    const navigation: any = useNavigation();
     return (
-        <Container>
+        <Container onPress={() => {
+            navigation.navigate("MatchDetails", {
+                match_id: match.match_id,
+                screen: "Live_MatchInfo"
+            })
+        }}>
             <GradientContainer colors={['#33014a', '#07000a']}>
                 <Header>
                     <LeftMatchTitle title={match?.series} />
@@ -60,7 +66,7 @@ export const Upcoming: FC<UpcomingProps> = ({ match }) => {
     )
 }
 
-const Container = styled.View`
+const Container = styled.TouchableOpacity`
     background-color: #5f026e;
     flex: 1;
     height: 150px;
