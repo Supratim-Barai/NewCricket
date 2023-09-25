@@ -54,10 +54,12 @@ const RecentMatchCard: FC<RecentMatchCardProps> = ({ match, isAll = false, ...re
                     </Player>
                     <Row>
                         <Button
-                        onPress={() => navigation.navigate("RecentStack_RecentTabs", {
-                            match_id: match.match_id,
-                            screen: "Live_ScoreCard"
-                        })}
+                            onPress={() => {
+                                navigation.navigate("MatchDetails", {
+                                    match_id: match.match_id,
+                                    screen: "Live_ScoreCard"
+                                })
+                            }}
                         >
                             <ButtonText>SCORE CARD</ButtonText>
                         </Button>

@@ -60,10 +60,20 @@ export const Recent: FC<RecentProps> = ({ recent }) => {
                         <Text>Shikhar {"\n"} Dhawan</Text>
                     </Player>
                     <Row>
-                        <Button onPress={() => navigation.navigate("HomePointTable", {})}>
+                        <Button onPress={() => {
+                            navigation.navigate("MatchDetails", {
+                                match_id: recent.match_id,
+                                screen: "Live_PointTable"
+                            })
+                        }}>
                             <ButtonText>POINT TABLE</ButtonText>
                         </Button>
-                        <Button onPress={() => navigation.navigate("HomeScoreCard", { matchId: recent.match_id })}><ButtonText>SCORE CARD</ButtonText></Button>
+                        <Button onPress={() => {
+                            navigation.navigate("MatchDetails", {
+                                match_id: recent.match_id,
+                                screen: "Live_ScoreCard"
+                            })
+                        }}><ButtonText>SCORE CARD</ButtonText></Button>
                     </Row>
                 </ManOfMatchContainer>
             </Body>

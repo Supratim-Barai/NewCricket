@@ -168,7 +168,7 @@ const MainRoutes: FC = () => {
                 name="MatchDetails"
                 component={MatchDetailsTabs}
                 options={({ route }: any) => ({
-                    title: route.params.name,
+                    title: '',
                     headerShown: true,
                     headerStyle: {
                         backgroundColor: '#731182',

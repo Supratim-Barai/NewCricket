@@ -22,10 +22,13 @@ const MatchDetailsTabs = (props: any) => {
     useEffect(() => {
         getMatchInfo(matchId).then(({ data }) => {
             setInfo(data?.data?.result)
+            props.navigation.setOptions({
+                title: `${data?.data?.result?.team_a_short} vs ${data?.data?.result?.team_b_short}`,
+            })
         }).finally(() => {
             setLoading(false);
         })
-    }, [matchId, setInfo, setLoading])
+    }, [matchId, setInfo, setLoading, props.navigation.setOptions])
 
     if (loading) return <View style={{
         alignItems: "center",
