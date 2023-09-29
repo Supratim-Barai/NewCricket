@@ -96,9 +96,9 @@ const MatchDetailsTabs = (props: any) => {
             }}>
                 {(props) => <Commentry  {...props} matchId={matchId} />}
             </Tab.Screen>
-            <Tab.Screen name="Live_BallByBall" component={BallByBall} options={{
-                lazy: true
-            }} />
+            <Tab.Screen name="Live_BallByBall" options={{ lazy: true }}>
+                {(props) => <BallByBall  {...props} />}
+            </Tab.Screen>
             <Tab.Screen name="Live_MyEntry" component={MyEntry} options={{
                 lazy: true
             }} />

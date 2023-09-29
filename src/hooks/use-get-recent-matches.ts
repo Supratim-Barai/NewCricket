@@ -49,6 +49,7 @@ export const useGetRecentMatches = (type: MatchType = "", limit: number = 5) => 
         getMatches();
     }, [])
 
+    console.log(matches)
     return {
         refreshing,
         loading,

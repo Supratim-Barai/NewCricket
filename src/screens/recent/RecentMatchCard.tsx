@@ -4,6 +4,7 @@ import { Card } from "../../ui";
 import { Match } from "../../config/axios";
 import { TouchableOpacityProps } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useGetManOfTheMatch } from "../../hooks/use-get-man-of-the-match";
 
 interface RecentMatchCardProps extends TouchableOpacityProps {
     match: Match;
@@ -11,6 +12,7 @@ interface RecentMatchCardProps extends TouchableOpacityProps {
 }
 
 const RecentMatchCard: FC<RecentMatchCardProps> = ({ match, isAll = false, ...rest }) => {
+    const { mom } = useGetManOfTheMatch(match.match_id)
     const navigation: any = useNavigation();
     return (
         <Card {...rest}>
@@ -48,10 +50,10 @@ const RecentMatchCard: FC<RecentMatchCardProps> = ({ match, isAll = false, ...re
                 </MatchContainer>
                 <ManOfMatchContainer>
                     <ManOfMatchContainerTitle>PLAYER OF THE MATCH</ManOfMatchContainerTitle>
-                    <Player>
-                        <Logo source={require("../../assets/images/shikhar-dhawan.jpeg")} />
-                        <Text>Shikhar {"\n"} Dhawan</Text>
-                    </Player>
+                    {mom ? <Player>
+                        <Logo source={{ uri: mom?.image }} />
+                        <Text>{mom?.name}</Text>
+                    </Player> : null}
                     <Row>
                         <Button
                             onPress={() => {

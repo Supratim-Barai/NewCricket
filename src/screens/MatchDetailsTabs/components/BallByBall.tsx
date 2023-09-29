@@ -7,7 +7,7 @@ import io from "socket.io-client";
 
 const SOCKET_URL = "http://52.66.245.248:3001";
 
-export const BallByBall = () => {
+export const BallByBall:any = () => {
     const [res, setRes] = useState<any>(null);
 
     useFocusEffect(React.useCallback(() => {
@@ -28,13 +28,6 @@ export const BallByBall = () => {
                         <OverDetails key={k} ballByBall={ballByBall}/>
                     )
                 })}
-
-                {/* <OverDetails />
-                <OverDetails />
-                <OverDetails />
-                <OverDetails />
-                <OverDetails />
-                <OverDetails /> */}
             </ScrollView>
         </Container>
     )

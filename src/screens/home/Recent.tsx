@@ -4,6 +4,7 @@ import { MatchType } from "../../components/MatchType";
 import { Card } from "../../ui";
 import { useNavigation } from "@react-navigation/native";
 import { Match } from "../../config/axios";
+import { useGetManOfTheMatch } from "../../hooks/use-get-man-of-the-match";
 
 interface RecentProps {
     recent: Match;
@@ -11,6 +12,7 @@ interface RecentProps {
 
 
 export const Recent: FC<RecentProps> = ({ recent }) => {
+    const { mom } = useGetManOfTheMatch(recent.match_id)
     const navigation: any = useNavigation();
     return (
         <Card
@@ -55,10 +57,10 @@ export const Recent: FC<RecentProps> = ({ recent }) => {
                 </MatchContainer>
                 <ManOfMatchContainer>
                     <ManOfMatchContainerTitle>PLAYER OF THE MATCH</ManOfMatchContainerTitle>
-                    <Player>
-                        <Logo source={require("../../assets/images/shikhar-dhawan.jpeg")} />
-                        <Text>Shikhar {"\n"} Dhawan</Text>
-                    </Player>
+                    {mom ? <Player>
+                        <Logo source={{ uri: mom?.image }} />
+                        <Text>{mom?.name}</Text>
+                    </Player> : null}
                     <Row>
                         <Button onPress={() => {
                             navigation.navigate("MatchDetails", {

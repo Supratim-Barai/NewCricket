@@ -486,3 +486,23 @@ export const getMatchLiveInfo = (matchId: string) => {
     data
   });
 }
+
+interface ManOfTheMatchResponse {
+  data: {
+    result: {
+      player: Player
+    }
+  },
+  "error": boolean;
+  "message": string;
+}
+
+export const getManOfTheMatche = (matchId: number) => {
+  const data = JSON.stringify({ matchId });
+  console.log("API: /match/manOfTheMatch", matchId)
+  return APIKit.request<ManOfTheMatchResponse>({
+    method: 'POST',
+    url: '/match/manOfTheMatch',
+    data,
+  });
+};
