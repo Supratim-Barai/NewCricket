@@ -16,6 +16,7 @@ export const PointsTable: FC<{ seriesId: string }> = ({ seriesId }) => {
     const handleGetPointsTable = useCallback(async () => {
         try {
             const { data } = await getPointTable(seriesId);
+            console.log(data)
             if (!data?.error) {
                 setPointsTable(data.data.result)
             }
@@ -74,113 +75,6 @@ export const PointsTable: FC<{ seriesId: string }> = ({ seriesId }) => {
         </Container>
     )
 }
-
-const data = [
-    {
-        team: {
-            name: "CHENNAI SK",
-            logo: ""
-        },
-        p: 8,
-        w: 6,
-        l: 2,
-        nr: 1,
-        cr: 3.74,
-        nrr: 0.547,
-        pts: 12
-    },
-    {
-        team: {
-            name: "CHENNAI SK",
-            logo: ""
-        },
-        p: 8,
-        w: 6,
-        l: 2,
-        nr: 1,
-        cr: 3.74,
-        nrr: 0.547,
-        pts: 12
-    },
-    {
-        team: {
-            name: "CHENNAI SK",
-            logo: ""
-        },
-        p: 8,
-        w: 6,
-        l: 2,
-        nr: 1,
-        cr: 3.74,
-        nrr: 0.547,
-        pts: 12
-    },
-    {
-        team: {
-            name: "CHENNAI SK",
-            logo: ""
-        },
-        p: 8,
-        w: 6,
-        l: 2,
-        nr: 1,
-        cr: 3.74,
-        nrr: 0.547,
-        pts: 12
-    },
-    {
-        team: {
-            name: "CHENNAI SK",
-            logo: ""
-        },
-        p: 8,
-        w: 6,
-        l: 2,
-        nr: 1,
-        cr: 3.74,
-        nrr: 0.547,
-        pts: 12
-    },
-    {
-        team: {
-            name: "CHENNAI SK",
-            logo: ""
-        },
-        p: 8,
-        w: 6,
-        l: 2,
-        nr: 1,
-        cr: 3.74,
-        nrr: 0.547,
-        pts: 12
-    },
-    {
-        team: {
-            name: "CHENNAI SK",
-            logo: ""
-        },
-        p: 8,
-        w: 6,
-        l: 2,
-        nr: 1,
-        cr: 3.74,
-        nrr: 0.547,
-        pts: 12
-    },
-    {
-        team: {
-            name: "CHENNAI SK",
-            logo: ""
-        },
-        p: 8,
-        w: 6,
-        l: 2,
-        nr: 1,
-        cr: 3.74,
-        nrr: 0.547,
-        pts: 12
-    }
-]
 
 const Logo = styled.Image`
     height: 20px;
