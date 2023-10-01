@@ -14,11 +14,12 @@ interface CommentriesProps {
     comentries: {
         [key: string]: Record<string, CommentryData[]>;
     } | undefined;
+    currentInnings: string | undefined;
 }
 
-export const Commentries: FC<CommentriesProps> = ({ comentries }) => {
+export const Commentries: FC<CommentriesProps> = ({ comentries, currentInnings }) => {
     const inning2 = comentries?.["2 Inning"] ?? {}, inning1 = comentries?.["1 Inning"] ?? {};
-    const [activeInnings, setActiveInnings] = useState<string | undefined>("1 Inning")
+    const [activeInnings, setActiveInnings] = useState<string | undefined>(currentInnings === "1" ? "1 Inning" : "2 Inning")
     const inningKeys = comentries ? Object.keys(comentries) : [];
     return (
         <Container>

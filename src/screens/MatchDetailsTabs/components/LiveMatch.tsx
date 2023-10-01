@@ -21,14 +21,18 @@ export const LiveMatch: FC<{ matchId: string }> = ({ matchId }) => {
     }, [setMatch])
 
     useEffect(() => {
-        socket.emit(EVENTS.GET_LIVE_SCORE_API, JSON.stringify({
-            matchId
-        }));
-
-        socket.on(EVENTS.GET_LIVE_SCORE_API_EMIT, handleGetLiveMatches);
-
+        const interval = setInterval(() => {
+            socket.emit(EVENTS.GET_LIVE_SCORE_API, JSON.stringify({ matchId }));
+        }, 10000);
         return () => {
-            console.log("soket off for", matchId);
+            clearInterval(interval);
+        }
+    }, [matchId])
+
+    useEffect(() => {
+        socket.on(EVENTS.GET_LIVE_SCORE_API_EMIT, handleGetLiveMatches);
+        return () => {
+            console.log("socket.off", matchId);
             socket.off(EVENTS.GET_LIVE_SCORE_API_EMIT, handleGetLiveMatches);
         }
     }, [socket, matchId, handleGetLiveMatches])

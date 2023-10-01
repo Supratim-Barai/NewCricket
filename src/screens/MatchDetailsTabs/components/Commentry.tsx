@@ -43,9 +43,6 @@ export const Commentry: FC<{ matchId: string }> = ({ matchId }) => {
         handleGetCommentries();
     }, [])
 
-    console.log(match?.bolwer, "getMatchLiveInfo")
-
-
     return (
         <Container>
             {Boolean(match) && <Card>
@@ -90,7 +87,7 @@ export const Commentry: FC<{ matchId: string }> = ({ matchId }) => {
                 {Boolean(match) && <CurrentScoreCard batsman={match?.batsman} bolwer={match?.bolwer} />}
                 {Boolean(match) && <LiveRun batsman={match?.batsman} bolwer={match?.bolwer} />}
                 {Boolean(match) && <RecentOvers last36ball={match?.last36ball || []} />}
-                <Commentries comentries={comentries} />
+                <Commentries comentries={comentries} currentInnings={match?.current_inning}/>
             </ScrollView>
         </Container>
     )
