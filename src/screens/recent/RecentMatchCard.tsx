@@ -216,7 +216,7 @@ const Score = styled.Text`
 const TeamName = styled.Text`
     color: #fff;
     font-family: 'Roboto-Black';
-    flex: 1;
+    width: 80px;
 `;
 
 
