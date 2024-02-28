@@ -17,6 +17,7 @@ export const LiveMatch: FC<{ matchId: string }> = ({ matchId }) => {
     const [match, setMatch] = useState<any>();
 
     const handleGetLiveMatches = useCallback((data: any) => {
+        console.log(JSON.stringify(data))
         setMatch(data?.result)
     }, [setMatch])
 
