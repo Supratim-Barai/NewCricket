@@ -1,13 +1,13 @@
-import React, {FC, Fragment, useState } from "react";
+import React, { FC, Fragment, useState } from "react";
 import styled from "styled-components/native";
 import { GradientContainer, Col, Row } from "../../../styles";
 import { AccordianButton } from "../../../components/AccordianButton";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { Text, View } from "react-native";
 
-export const OverDetails:FC<{ballByBall:any}> = ({ballByBall}) => {
+export const OverDetails: FC<{ title: string, ballByBall: any }> = ({ title, ballByBall }) => {
     const [show, setShow] = useState(false);
-    const title = ballByBall?.overs?.[0]+" OVER"
+
     return (
         <Fragment>
             <AccordianButton
@@ -16,7 +16,7 @@ export const OverDetails:FC<{ballByBall:any}> = ({ballByBall}) => {
                 toggleShow={() => setShow(x => !x)}
             />
             {show && <Container>
-                    <Row key={ballByBall?.key}>
+                {/* <Row key={ballByBall?.key}>
                     <Col flex={75}>
                         <AccordianContent style={{
                             marginBottom: 10
@@ -59,9 +59,54 @@ export const OverDetails:FC<{ballByBall:any}> = ({ballByBall}) => {
                             <Time>08:35 pm</Time>
                         </ScoreContainer>
                     </Col>
-                </Row>
-                
-                
+                </Row> */}
+                {ballByBall?.map((d: any, key: number) => (
+                    <Row key={key}>
+                        <Col flex={75}>
+                            <AccordianContent style={{
+                                marginBottom: 10
+                            }}>
+                                <TeamName>MUMBAI INDIANS</TeamName>
+                                <BoxContainer>
+                                    <Box variant="green">
+                                        <BoxText>41</BoxText>
+                                    </Box>
+                                    <Box variant="red">
+                                        <BoxText>42</BoxText>
+                                    </Box>
+                                </BoxContainer>
+                            </AccordianContent>
+                            <Circle>
+                                <CircleText>{d?.data?.runs}</CircleText>
+                            </Circle>
+                            <AccordianContent style={{
+                                marginTop: 10
+                            }}>
+                                <Over>20 OVER SESSION</Over>
+                                <BoxContainer>
+                                    <Box>
+                                        <BoxText>94</BoxText>
+                                    </Box>
+                                    <Box>
+                                        <BoxText>95</BoxText>
+                                    </Box>
+                                </BoxContainer>
+                            </AccordianContent>
+                        </Col>
+                        <Col flex={5} />
+                        <Col flex={20} style={{
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }}>
+                            <ScoreContainer>
+                                <Score>{d?.data?.runs}{d?.data?.wicket ? '/' : ''}{d?.data?.wicket}</Score>
+                                <RunningOver>{d?.data?.overs} over</RunningOver>
+                                <Time>08:35 pm</Time>
+                            </ScoreContainer>
+                        </Col>
+                    </Row>
+                ))}
+
                 {/* <Row>
                     <Col flex={75}>
                         <AccordianContent style={{
