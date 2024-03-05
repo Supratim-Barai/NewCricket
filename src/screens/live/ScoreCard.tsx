@@ -8,28 +8,28 @@ import { getScoreCard, scoreCard } from "../../config/axios";
 
 export const ScoreCard: FC<{ matchId: string }> = ({ matchId }) => {
 
-    const [scorecard, setscorecard] = useState<{ [key: number]: scoreCard }>();
+    const [scorecard, setscorecard] = useState<{ [key: number]: scoreCard | any }>(scoreData.data.scorecard);
 
-    const handleGetScorecard = useCallback(async () => {
-        try {
-            const { data } = await getScoreCard(matchId);
-            console.log("Scrore Card", data)
-            if (!data?.error) {
-                setscorecard(data.data.result.scorecard)
-            }
-        } catch (e) {
+    // const handleGetScorecard = useCallback(async () => {
+    //     try {
+    //         const { data } = await getScoreCard(matchId);
+    //         console.log("Scrore Card", data)
+    //         if (!data?.error) {
+    //             setscorecard(data.data.result.scorecard)
+    //         }
+    //     } catch (e) {
 
-        } finally {
+    //     } finally {
 
-        }
-    }, [matchId, setscorecard])
+    //     }
+    // }, [matchId, setscorecard])
 
-    useEffect(() => {
-        handleGetScorecard()
-    }, [])
+    // useEffect(() => {
+    //     handleGetScorecard()
+    // }, [])
 
 
-    console.log({ scorecard })
+    console.log(scorecard)
 
     return (
         <Container>
@@ -46,7 +46,8 @@ interface ScoreBoardProps {
 }
 
 const ScoreBoard: FC<ScoreBoardProps> = ({ data }) => {
-    // const { batsman, bolwer, team, fallwicket } = data;
+    const { batsman, bolwer, team, fallwicket } = data;
+    console.log({data})
     return (
         <Fragment>
             <Text style={{ textAlign: "center", marginBottom: 10, marginTop: 10, fontSize: 14, color: "#fff" }}>{team.name}</Text>
