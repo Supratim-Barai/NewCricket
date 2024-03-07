@@ -7,7 +7,7 @@ import { OverDetails } from "./OverDetails";
 import io from "socket.io-client";
 import mockdata from "../../../mockdata/ballbyball";
 
-const SOCKET_URL = "http://52.66.245.248:3001";
+const SOCKET_URL = "http://34.93.97.239:3001";
 
 const Tab = createMaterialTopTabNavigator();
 
