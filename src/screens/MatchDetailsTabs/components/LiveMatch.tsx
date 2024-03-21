@@ -11,14 +11,16 @@ import styled from "styled-components/native";
 import LinearGradient from "react-native-linear-gradient";
 import { useSocket, EVENTS } from "../../../context/socket";
 import { RecentOvers } from "./RecentOvers";
+import mokedata from "../../../mockdata/livematch";
+import GifComponent from "../../../components/GifComponent";
 
 export const LiveMatch: FC<{ matchId: string }> = ({ matchId }) => {
     const socket = useSocket();
-    const [match, setMatch] = useState<any>();
+    const [match, setMatch] = useState<any>(mokedata.data);
 
     const handleGetLiveMatches = useCallback((data: any) => {
         console.log(JSON.stringify(data))
-        setMatch(data?.result)
+        // setMatch(data?.result)
     }, [setMatch])
 
     useEffect(() => {
@@ -46,6 +48,7 @@ export const LiveMatch: FC<{ matchId: string }> = ({ matchId }) => {
             <ActivityIndicator color={"#fff"} />
         </Container>
     )
+
     return (
         <Container>
             <ScrollView>
@@ -74,9 +77,11 @@ export const LiveMatch: FC<{ matchId: string }> = ({ matchId }) => {
                         </TeamScoreContainer>
                     </Body>
                     <View style={{ flex: 1 }}></View>
+
                     <RunRateContainer>
                         <RunRateText>CRR: {match?.curr_rate}</RunRateText>
-                        <RunRateText>RR: {match?.rr_rate}</RunRateText>
+                        <GifComponent ball={match?.last4overs?.slice(-1)?.[0]?.balls?.slice(-1)?.[0]}/>
+                        <RunRateText style={{textAlign: "right"}}>RR: {match?.rr_rate}</RunRateText>
                     </RunRateContainer>
                 </Card>
                 <Exchnage />
@@ -100,13 +105,14 @@ const Card = styled(GradientContainer)`
 const RunRateContainer = styled.View`
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
 `;
 
 const RunRateText = styled.Text`
     color: #fff;
     font-size: 10px;
     font-family: "Roboto-Bold";
+    flex: 1
 `;
 
 const Body = styled.View`

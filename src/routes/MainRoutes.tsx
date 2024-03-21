@@ -23,7 +23,7 @@ const MainStack = createNativeStackNavigator<MainStackParamList>();
 
 const MainRoutes: FC = () => {
     return (
-        <MainStack.Navigator initialRouteName="Drawer">
+        <MainStack.Navigator initialRouteName="MatchDetails">
             <MainStack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
             <MainStack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <MainStack.Screen name="Otp" component={Otp} options={{ headerShown: false }} />
