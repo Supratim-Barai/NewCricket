@@ -80,8 +80,11 @@ export const LiveMatch: FC<{ matchId: string }> = ({ matchId }) => {
 
                     <RunRateContainer>
                         <RunRateText>CRR: {match?.curr_rate}</RunRateText>
-                        <GifComponent ball={match?.last4overs?.slice(-1)?.[0]?.balls?.slice(-1)?.[0]}/>
-                        <RunRateText style={{textAlign: "right"}}>RR: {match?.rr_rate}</RunRateText>
+                        <GifComponent
+                            ball={match?.last4overs?.slice(-1)?.[0]?.balls?.slice(-1)?.[0]}
+                            // ball="0"
+                        />
+                        <RunRateText style={{ textAlign: "right" }}>RR: {match?.rr_rate}</RunRateText>
                     </RunRateContainer>
                 </Card>
                 <Exchnage />
