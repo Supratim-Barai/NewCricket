@@ -16,11 +16,13 @@ import GifComponent from "../../../components/GifComponent";
 
 export const LiveMatch: FC<{ matchId: string }> = ({ matchId }) => {
     const socket = useSocket();
-    const [match, setMatch] = useState<any>(mokedata.data);
+    // const [match, setMatch] = useState<any>(mokedata.data);
+    const [match, setMatch] = useState<any>();
+
 
     const handleGetLiveMatches = useCallback((data: any) => {
         console.log(JSON.stringify(data))
-        // setMatch(data?.result)
+        setMatch(data?.result)
     }, [setMatch])
 
     useEffect(() => {
