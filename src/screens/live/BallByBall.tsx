@@ -4,8 +4,8 @@ import { ScrollView } from "react-native";
 import { Container } from "../../styles";
 import { OverDetails } from "./OverDetails";
 import io from "socket.io-client";
+import { SOCKET_URL } from "../../constants";
 
-const SOCKET_URL = "http://52.66.245.248:3001";
 
 export const BallByBall = () => {
     const [res, setRes] = useState<any>(null);

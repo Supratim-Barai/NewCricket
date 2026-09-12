@@ -13,7 +13,8 @@ import { T20 } from "../../components/T20";
 import { MatchPoint } from "../../components/MatchPoint";
 import { Match, getLiveMatches } from "../../config/axios";
 import { Loading } from "../../components/Loading";
-const SOCKET_URL = "http://52.66.245.248:3001";
+import { SOCKET_URL } from "../../constants";
+
 
 export const LiveMatches = ({ navigation }: any) => {
     const [refreshing, setRefreshing] = useState(false);

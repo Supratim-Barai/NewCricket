@@ -26,7 +26,7 @@ const Login: FC<LoginProps> = ({ navigation }) => {
   }, [otpSent, navigation]);
 
   const initialValues: LoginFormValues = {
-    phone: '1234557899',
+    phone: '',
   };
 
   return (

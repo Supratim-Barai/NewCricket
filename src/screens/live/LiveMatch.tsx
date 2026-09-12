@@ -5,8 +5,6 @@ import { CurrentScoreCard } from "./CurrentScoreCard";
 import { CurrentPartnership } from "./CurrentPartnership";
 // import { RecentOvers } from "./RecentOvers";
 import { Whatsapp } from "./Whatsapp";
-import { Session } from "./Session";
-import { Exchnage } from "./Exchange";
 import { ActivityIndicator, ScrollView, View } from "react-native";
 import { useAppDispatch, useAppSelector } from "../../store";
 import styled from "styled-components/native";
@@ -72,8 +70,6 @@ export const LiveMatch: FC<{ matchId: string }> = ({ matchId }) => {
                         <RunRateText>RR:{liveMatch?.rr_rate}</RunRateText>
                     </RunRateContainer>
                 </Card>
-                <Exchnage />
-                <Session />
                 <Whatsapp />
                 {/* <RecentOvers last36ball={liveMatch?.last36ball || []} /> */}
                 <CurrentPartnership partnership={liveMatch?.partnership} />

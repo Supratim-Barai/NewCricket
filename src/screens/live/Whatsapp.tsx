@@ -7,7 +7,7 @@ import {
 
 export const Whatsapp = () => (
     <TeamNameContainer colors={['#5f026e', '#33014a', '#5f026e']}>
-        <Text>GET GENUINE ID WHATSAPP @1234567890</Text>
+        <Text>GET GENUINE ID WHATSAPP</Text>
     </TeamNameContainer>
 )
 
