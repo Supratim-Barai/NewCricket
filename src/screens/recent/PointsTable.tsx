@@ -30,7 +30,7 @@ export const PointsTable = () => {
                                         flexDirection: "row",
                                         alignItems: "flex-start"
                                     }}>
-                                        <Logo source={require("../../assets/images/mi.jpeg")} />
+                                        <Logo source={require("../../assets/images/warface.png")} />
                                         <TableText>{d.team.name}</TableText>
                                     </View>
                                 </Col>

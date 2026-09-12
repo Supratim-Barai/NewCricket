@@ -13,8 +13,8 @@ export const MatchStatus = () => (
                 </VsContainer>
                 <TeamName>MI</TeamName>
             </TeamNameContainer>
-            <Logo source={require("../../assets/images/csk.png")} style={{ left: -2.5 }} />
-            <Logo source={require("../../assets/images/mi.jpeg")} style={{ right: -2.5 }} />
+            <Logo source={require("../../assets/images/dragon.png")} style={{ left: -2.5 }} />
+            <Logo source={require("../../assets/images/warface.png")} style={{ right: -2.5 }} />
         </TeamContainer>
         <Caption>CSK WON THE TOSS & OPTED TO BAT</Caption>
     </Container>

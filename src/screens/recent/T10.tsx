@@ -34,7 +34,7 @@ const T10 = () => {
     }, [refreshing]);
 
     const fetchMore = useCallback(async () => {
-        if(loading) return;
+        if (loading) return;
         try {
             setLoading(true);
             console.log("page====", page + 1)
@@ -81,7 +81,7 @@ const T10 = () => {
                     <ManOfMatchContainer>
                         <ManOfMatchContainerTitle>PLAYER OF THE MATCH</ManOfMatchContainerTitle>
                         <Player>
-                            <Logo source={require("../../assets/images/shikhar-dhawan.jpeg")} />
+                            <Logo source={require("../../assets/images/user.png")} />
                             <Text>Shikhar {"\n"} Dhawan</Text>
                         </Player>
                         <Row>
@@ -108,7 +108,7 @@ const T10 = () => {
             padding: 8
         }}>
             {loading && <ActivityIndicator />}
-            
+
         </View>
     )
 

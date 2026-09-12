@@ -15,7 +15,7 @@ const T10 = () => {
     const [loading, setLoading] = useState(true);
     const [matches, setMatches] = useState<Array<Match>>([]);
     const [page, setPage] = useState(1);
-    
+
     const getMatche = async () => {
         try {
             const { data } = await getUpcomingMatches("T10", 1, 5);
@@ -166,13 +166,13 @@ const data = [
         venue: "CHENNAI",
         team: {
             name: "CSK",
-            avatar: require("../../assets/images/csk.png"),
+            avatar: require("../../assets/images/dragon.png"),
             projectedScore: "163-165",
             projectedPoint: "60"
         },
         oppositionTeam: {
             name: "MI",
-            avatar: require("../../assets/images/mi.jpeg"),
+            avatar: require("../../assets/images/warface.png"),
             projectedScore: "159-161",
             projectedPoint: "66"
         }
@@ -186,13 +186,13 @@ const data = [
         venue: "CHENNAI",
         team: {
             name: "CSK",
-            avatar: require("../../assets/images/csk.png"),
+            avatar: require("../../assets/images/dragon.png"),
             projectedScore: "163-165",
             projectedPoint: "60"
         },
         oppositionTeam: {
             name: "MI",
-            avatar: require("../../assets/images/mi.jpeg"),
+            avatar: require("../../assets/images/warface.png"),
             projectedScore: "159",
             projectedPoint: "66"
         }
@@ -206,13 +206,13 @@ const data = [
         venue: "CHENNAI",
         team: {
             name: "CSK",
-            avatar: require("../../assets/images/csk.png"),
+            avatar: require("../../assets/images/dragon.png"),
             projectedScore: "163-165",
             projectedPoint: "60"
         },
         oppositionTeam: {
             name: "MI",
-            avatar: require("../../assets/images/mi.jpeg"),
+            avatar: require("../../assets/images/warface.png"),
             projectedScore: "159",
             projectedPoint: "66"
         }
@@ -226,13 +226,13 @@ const data = [
         venue: "CHENNAI",
         team: {
             name: "CSK",
-            avatar: require("../../assets/images/csk.png"),
+            avatar: require("../../assets/images/dragon.png"),
             projectedScore: "163-165",
             projectedPoint: "60"
         },
         oppositionTeam: {
             name: "MI",
-            avatar: require("../../assets/images/mi.jpeg"),
+            avatar: require("../../assets/images/warface.png"),
             projectedScore: "159",
             projectedPoint: "66"
         }
@@ -246,13 +246,13 @@ const data = [
         venue: "CHENNAI",
         team: {
             name: "CSK",
-            avatar: require("../../assets/images/csk.png"),
+            avatar: require("../../assets/images/dragon.png"),
             projectedScore: "163-165",
             projectedPoint: "60"
         },
         oppositionTeam: {
             name: "MI",
-            avatar: require("../../assets/images/mi.jpeg"),
+            avatar: require("../../assets/images/warface.png"),
             projectedScore: "159",
             projectedPoint: "66"
         }
@@ -266,13 +266,13 @@ const data = [
         venue: "CHENNAI",
         team: {
             name: "CSK",
-            avatar: require("../../assets/images/csk.png"),
+            avatar: require("../../assets/images/dragon.png"),
             projectedScore: "163-165",
             projectedPoint: "60"
         },
         oppositionTeam: {
             name: "MI",
-            avatar: require("../../assets/images/mi.jpeg"),
+            avatar: require("../../assets/images/warface.png"),
             projectedScore: "159",
             projectedPoint: "66"
         }
@@ -286,13 +286,13 @@ const data = [
         venue: "CHENNAI",
         team: {
             name: "CSK",
-            avatar: require("../../assets/images/csk.png"),
+            avatar: require("../../assets/images/dragon.png"),
             projectedScore: "163-165",
             projectedPoint: "60"
         },
         oppositionTeam: {
             name: "MI",
-            avatar: require("../../assets/images/mi.jpeg"),
+            avatar: require("../../assets/images/warface.png"),
             projectedScore: "159",
             projectedPoint: "66"
         }
@@ -306,13 +306,13 @@ const data = [
         venue: "CHENNAI",
         team: {
             name: "CSK",
-            avatar: require("../../assets/images/csk.png"),
+            avatar: require("../../assets/images/dragon.png"),
             projectedScore: "163-165",
             projectedPoint: "60"
         },
         oppositionTeam: {
             name: "MI",
-            avatar: require("../../assets/images/mi.jpeg"),
+            avatar: require("../../assets/images/warface.png"),
             projectedScore: "159",
             projectedPoint: "66"
         }
@@ -326,13 +326,13 @@ const data = [
         venue: "CHENNAI",
         team: {
             name: "CSK",
-            avatar: require("../../assets/images/csk.png"),
+            avatar: require("../../assets/images/dragon.png"),
             projectedScore: "163-165",
             projectedPoint: "60"
         },
         oppositionTeam: {
             name: "MI",
-            avatar: require("../../assets/images/mi.jpeg"),
+            avatar: require("../../assets/images/warface.png"),
             projectedScore: "159",
             projectedPoint: "66"
         }
@@ -346,13 +346,13 @@ const data = [
         venue: "CHENNAI",
         team: {
             name: "CSK",
-            avatar: require("../../assets/images/csk.png"),
+            avatar: require("../../assets/images/dragon.png"),
             projectedScore: "163-165",
             projectedPoint: "60"
         },
         oppositionTeam: {
             name: "MI",
-            avatar: require("../../assets/images/mi.jpeg"),
+            avatar: require("../../assets/images/warface.png"),
             projectedScore: "159",
             projectedPoint: "66"
         }

@@ -27,8 +27,8 @@ export const CurrentPartnership: FC<{
                 <TeamNameContainer colors={['#5f026e', '#33014a', '#5f026e']}>
                     <Score>{partnership?.run}({partnership?.ball})</Score>
                 </TeamNameContainer>
-                <Logo style={{ left: 0 }} source={require("../../assets/images/shikhar-dhawan.jpeg")} />
-                <Logo style={{ right: 0 }} source={require("../../assets/images/shikhar-dhawan.jpeg")} />
+                <Logo style={{ left: 0 }} source={require("../../assets/images/user.png")} />
+                <Logo style={{ right: 0 }} source={require("../../assets/images/user.png")} />
                 <PlayerName style={{
                     left: 0,
                     bottom: 10

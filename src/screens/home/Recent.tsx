@@ -47,7 +47,7 @@ export const Recent: FC<RecentProps> = ({ recent }) => {
                 <ManOfMatchContainer>
                     <ManOfMatchContainerTitle>PLAYER OF THE MATCH</ManOfMatchContainerTitle>
                     <Player>
-                        <Logo source={require("../../assets/images/shikhar-dhawan.jpeg")} />
+                        <Logo source={require("../../assets/images/user.png")} />
                         <Text>Shikhar {"\n"} Dhawan</Text>
                     </Player>
                     <Row>
